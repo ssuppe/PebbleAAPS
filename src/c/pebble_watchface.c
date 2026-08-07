@@ -55,6 +55,9 @@ static void update_trend_arrow() {
   int num_resources = sizeof(ARROW_RESOURCE_IDS) / sizeof(ARROW_RESOURCE_IDS[0]);
   int safe_idx = get_safe_trend_index(s_state.trend_value, num_resources);
 
+  // Disassociate the old bitmap from the layer first to avoid dangling pointers
+  bitmap_layer_set_bitmap(s_arrow_layer, NULL);
+
   // Free previous bitmap to avoid memory leaks
   if (s_arrow_bitmap) {
     gbitmap_destroy(s_arrow_bitmap);
@@ -66,8 +69,10 @@ static void update_trend_arrow() {
   
   if (s_arrow_bitmap) {
     bitmap_layer_set_bitmap(s_arrow_layer, s_arrow_bitmap);
-    layer_mark_dirty(bitmap_layer_get_layer(s_arrow_layer));
   }
+  
+  // Mark layer dirty to redraw (or clear)
+  layer_mark_dirty(bitmap_layer_get_layer(s_arrow_layer));
 }
 
 static void update_time() {
