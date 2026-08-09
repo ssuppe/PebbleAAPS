@@ -1,0 +1,29 @@
+{
+  "output": {
+    "filePath": "repomix-output.md",
+    "style": "markdown",
+    "parsableStyle": true,
+    "fileSummary": true,
+    "directoryStructure": true,
+    "removeComments": false,
+    "removeEmptyLines": false,
+    "showLineNumbers": true
+  },
+  "ignore": {
+    "useGitIgnore": true,
+    "useDefaultPatterns": true,
+    "customPatterns": [
+      "**/build/**",
+      "**/.lock-waf*",
+      "**/.agents/**",
+      "**/resources/images/**",
+      "**/tmp/**",
+      "**/*.png",
+      "**/*.pbw",
+      "**/package-lock.json"
+    ]
+  },
+  "security": {
+    "enableSecurityCheck": true
+  }
+}
