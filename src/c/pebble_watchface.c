@@ -445,8 +445,8 @@ static void main_window_load(Window *window) {
   text_layer_set_text_alignment(s_age_layer, GTextAlignmentRight);
   layer_add_child(window_layer, text_layer_get_layer(s_age_layer));
 
-  // IOB: x=10 y=92 w=95 h=28 -> 10*1000/200 = 50, 92*1000/228 = 404, 95*1000/200 = 475, 28*1000/228 = 123
-  s_iob_layer = text_layer_create(GRect(scl_x(50), scl_y(404), scl_x(475), scl_y(123)));
+  // IOB: x=10 y=92 w=90 h=28 -> 10*1000/200 = 50, 92*1000/228 = 404, 90*1000/200 = 450, 28*1000/228 = 123
+  s_iob_layer = text_layer_create(GRect(scl_x(50), scl_y(404), scl_x(450), scl_y(123)));
   text_layer_set_background_color(s_iob_layer, GColorClear);
   text_layer_set_text_color(s_iob_layer, GColorWhite);
   text_layer_set_font(s_iob_layer, scl_get_font(1));
@@ -466,8 +466,8 @@ static void main_window_load(Window *window) {
   text_layer_set_font(s_basal_layer, scl_get_font(3)); // Larger font (index 3)
   layer_add_child(window_layer, text_layer_get_layer(s_basal_layer));
 
-  // COB: x=110 y=92 w=80 h=28 -> 110*1000/200 = 550, 92*1000/228 = 404, 80*1000/200 = 400, 28*1000/228 = 123
-  s_cob_layer = text_layer_create(GRect(scl_x(550), scl_y(404), scl_x(400), scl_y(123)));
+  // COB: x=100 y=92 w=90 h=28 -> 100*1000/200 = 500, 92*1000/228 = 404, 90*1000/200 = 450, 28*1000/228 = 123
+  s_cob_layer = text_layer_create(GRect(scl_x(500), scl_y(404), scl_x(450), scl_y(123)));
   text_layer_set_background_color(s_cob_layer, GColorClear);
   text_layer_set_text_color(s_cob_layer, GColorWhite);
   text_layer_set_font(s_cob_layer, scl_get_font(1));
@@ -532,8 +532,8 @@ static void init() {
   // Font styling configuration
   scl_set_fonts(0, {.o = fonts_get_system_font(FONT_KEY_GOTHIC_14),
                     .e = fonts_get_system_font(FONT_KEY_GOTHIC_18)});
-  scl_set_fonts(1, {.o = fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD),
-                    .e = fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD)});
+  scl_set_fonts(1, {.o = fonts_get_system_font(FONT_KEY_GOTHIC_14_BOLD),
+                    .e = fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD)});
   scl_set_fonts(2, {.o = fonts_get_system_font(FONT_KEY_LECO_36_BOLD_NUMBERS),
                     .e = fonts_get_system_font(FONT_KEY_LECO_38_BOLD_NUMBERS)});
   scl_set_fonts(3, {.o = fonts_get_system_font(FONT_KEY_GOTHIC_14_BOLD),
