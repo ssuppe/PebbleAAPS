@@ -1,0 +1,1263 @@
+{
+  "fileType": "pebble-face-studio-project",
+  "version": 1,
+  "timestamp": 1723200000000,
+  "meta": {
+    "name": "PebbleAAPS",
+    "uuid": "54D3008F-E144-4712-B201-24BC515C40BA",
+    "targetPlatforms": [
+      "emery"
+    ],
+    "dimensions": {
+      "width": 200,
+      "height": 228
+    },
+    "backgroundColor": "#000000"
+  },
+  "resources": {
+    "fonts": []
+  },
+  "scene": [
+    {
+      "id": "graph_high_target",
+      "name": "Graph High Target",
+      "type": "bitmap",
+      "locked": true,
+      "x": 0,
+      "y": 170,
+      "width": 200,
+      "height": 1,
+      "rotation": 0,
+      "stroke": "#000000",
+      "strokeWidth": 0,
+      "dataUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAAABCAYAAACbv+HiAAAAHUlEQVR4nGMMDQ39zwAFq1evZoSxR8VHxUfFGRgAvWyGAEQzJy4AAAAASUVORK5CYII=",
+      "fileName": "high_target_dashed.png"
+    },
+    {
+      "id": "graph_low_target",
+      "name": "Graph Low Target",
+      "type": "bitmap",
+      "locked": true,
+      "x": 0,
+      "y": 195,
+      "width": 200,
+      "height": 1,
+      "rotation": 0,
+      "stroke": "#000000",
+      "strokeWidth": 0,
+      "dataUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAAABCAYAAACbv+HiAAAAHUlEQVR4nGNcxcDwnwEKwhgYGGHsUfFR8VFxBgYAbS9Dq/LXpRQAAAAASUVORK5CYII=",
+      "fileName": "low_target_dashed.png"
+    },
+    {
+      "id": "graph_temp_basal",
+      "name": "Graph Temp Basal Step",
+      "type": "gpath",
+      "locked": true,
+      "x": 0,
+      "y": 0,
+      "width": 200,
+      "height": 228,
+      "rotation": 0,
+      "stroke": "#0000aa",
+      "strokeWidth": 2,
+      "points": [
+        {
+          "x": 10,
+          "y": 210
+        },
+        {
+          "x": 60,
+          "y": 210
+        },
+        {
+          "x": 60,
+          "y": 190
+        },
+        {
+          "x": 110,
+          "y": 190
+        },
+        {
+          "x": 110,
+          "y": 210
+        },
+        {
+          "x": 190,
+          "y": 210
+        }
+      ]
+    },
+    {
+      "id": "graph_glucose_curve",
+      "name": "Graph Glucose Curve",
+      "type": "gpath",
+      "locked": true,
+      "x": 0,
+      "y": 0,
+      "width": 200,
+      "height": 228,
+      "rotation": 0,
+      "stroke": "#00aa00",
+      "strokeWidth": 2,
+      "points": [
+        {
+          "x": 10,
+          "y": 208
+        },
+        {
+          "x": 15,
+          "y": 206
+        },
+        {
+          "x": 20,
+          "y": 204
+        },
+        {
+          "x": 25,
+          "y": 202
+        },
+        {
+          "x": 30,
+          "y": 200
+        },
+        {
+          "x": 35,
+          "y": 197
+        },
+        {
+          "x": 40,
+          "y": 194
+        },
+        {
+          "x": 45,
+          "y": 192
+        },
+        {
+          "x": 50,
+          "y": 190
+        },
+        {
+          "x": 55,
+          "y": 187
+        },
+        {
+          "x": 60,
+          "y": 185
+        },
+        {
+          "x": 65,
+          "y": 183
+        },
+        {
+          "x": 70,
+          "y": 181
+        },
+        {
+          "x": 75,
+          "y": 179
+        },
+        {
+          "x": 80,
+          "y": 177
+        },
+        {
+          "x": 85,
+          "y": 175
+        },
+        {
+          "x": 90,
+          "y": 173
+        },
+        {
+          "x": 95,
+          "y": 172
+        },
+        {
+          "x": 100,
+          "y": 171
+        },
+        {
+          "x": 105,
+          "y": 171
+        },
+        {
+          "x": 110,
+          "y": 170
+        },
+        {
+          "x": 115,
+          "y": 169
+        },
+        {
+          "x": 120,
+          "y": 167
+        },
+        {
+          "x": 125,
+          "y": 165
+        },
+        {
+          "x": 130,
+          "y": 163
+        },
+        {
+          "x": 135,
+          "y": 161
+        },
+        {
+          "x": 140,
+          "y": 159
+        },
+        {
+          "x": 145,
+          "y": 158
+        },
+        {
+          "x": 150,
+          "y": 159
+        },
+        {
+          "x": 155,
+          "y": 161
+        },
+        {
+          "x": 160,
+          "y": 163
+        },
+        {
+          "x": 165,
+          "y": 165
+        },
+        {
+          "x": 170,
+          "y": 167
+        },
+        {
+          "x": 175,
+          "y": 169
+        },
+        {
+          "x": 180,
+          "y": 171
+        },
+        {
+          "x": 185,
+          "y": 173
+        }
+      ]
+    },
+    {
+      "id": "gdot_1",
+      "name": "Graph Dot 1 (Low)",
+      "type": "rect",
+      "locked": true,
+      "x": 8,
+      "y": 206,
+      "width": 4,
+      "height": 4,
+      "rotation": 0,
+      "fill": "#aa0000",
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    {
+      "id": "gdot_2",
+      "name": "Graph Dot 2 (Low)",
+      "type": "rect",
+      "locked": true,
+      "x": 13,
+      "y": 204,
+      "width": 4,
+      "height": 4,
+      "rotation": 0,
+      "fill": "#aa0000",
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    {
+      "id": "gdot_3",
+      "name": "Graph Dot 3 (Low)",
+      "type": "rect",
+      "locked": true,
+      "x": 18,
+      "y": 202,
+      "width": 4,
+      "height": 4,
+      "rotation": 0,
+      "fill": "#aa0000",
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    {
+      "id": "gdot_4",
+      "name": "Graph Dot 4 (Low)",
+      "type": "rect",
+      "locked": true,
+      "x": 23,
+      "y": 200,
+      "width": 4,
+      "height": 4,
+      "rotation": 0,
+      "fill": "#aa0000",
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    {
+      "id": "gdot_5",
+      "name": "Graph Dot 5 (Low)",
+      "type": "rect",
+      "locked": true,
+      "x": 28,
+      "y": 198,
+      "width": 4,
+      "height": 4,
+      "rotation": 0,
+      "fill": "#aa0000",
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    {
+      "id": "gdot_6",
+      "name": "Graph Dot 6 (Low)",
+      "type": "rect",
+      "locked": true,
+      "x": 33,
+      "y": 195,
+      "width": 4,
+      "height": 4,
+      "rotation": 0,
+      "fill": "#aa0000",
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    {
+      "id": "gdot_7",
+      "name": "Graph Dot 7 (In-Range)",
+      "type": "rect",
+      "locked": true,
+      "x": 38,
+      "y": 192,
+      "width": 4,
+      "height": 4,
+      "rotation": 0,
+      "fill": "#00aa00",
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    {
+      "id": "gdot_8",
+      "name": "Graph Dot 8 (In-Range)",
+      "type": "rect",
+      "locked": true,
+      "x": 43,
+      "y": 190,
+      "width": 4,
+      "height": 4,
+      "rotation": 0,
+      "fill": "#00aa00",
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    {
+      "id": "gdot_9",
+      "name": "Graph Dot 9 (In-Range)",
+      "type": "rect",
+      "locked": true,
+      "x": 48,
+      "y": 188,
+      "width": 4,
+      "height": 4,
+      "rotation": 0,
+      "fill": "#00aa00",
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    {
+      "id": "gdot_10",
+      "name": "Graph Dot 10 (In-Range)",
+      "type": "rect",
+      "locked": true,
+      "x": 53,
+      "y": 185,
+      "width": 4,
+      "height": 4,
+      "rotation": 0,
+      "fill": "#00aa00",
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    {
+      "id": "gdot_11",
+      "name": "Graph Dot 11 (In-Range)",
+      "type": "rect",
+      "locked": true,
+      "x": 58,
+      "y": 183,
+      "width": 4,
+      "height": 4,
+      "rotation": 0,
+      "fill": "#00aa00",
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    {
+      "id": "gdot_12",
+      "name": "Graph Dot 12 (In-Range)",
+      "type": "rect",
+      "locked": true,
+      "x": 63,
+      "y": 181,
+      "width": 4,
+      "height": 4,
+      "rotation": 0,
+      "fill": "#00aa00",
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    {
+      "id": "gdot_13",
+      "name": "Graph Dot 13 (In-Range)",
+      "type": "rect",
+      "locked": true,
+      "x": 68,
+      "y": 179,
+      "width": 4,
+      "height": 4,
+      "rotation": 0,
+      "fill": "#00aa00",
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    {
+      "id": "gdot_14",
+      "name": "Graph Dot 14 (In-Range)",
+      "type": "rect",
+      "locked": true,
+      "x": 73,
+      "y": 177,
+      "width": 4,
+      "height": 4,
+      "rotation": 0,
+      "fill": "#00aa00",
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    {
+      "id": "gdot_15",
+      "name": "Graph Dot 15 (In-Range)",
+      "type": "rect",
+      "locked": true,
+      "x": 78,
+      "y": 175,
+      "width": 4,
+      "height": 4,
+      "rotation": 0,
+      "fill": "#00aa00",
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    {
+      "id": "gdot_16",
+      "name": "Graph Dot 16 (In-Range)",
+      "type": "rect",
+      "locked": true,
+      "x": 83,
+      "y": 173,
+      "width": 4,
+      "height": 4,
+      "rotation": 0,
+      "fill": "#00aa00",
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    {
+      "id": "gdot_17",
+      "name": "Graph Dot 17 (In-Range)",
+      "type": "rect",
+      "locked": true,
+      "x": 88,
+      "y": 171,
+      "width": 4,
+      "height": 4,
+      "rotation": 0,
+      "fill": "#00aa00",
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    {
+      "id": "gdot_18",
+      "name": "Graph Dot 18 (In-Range)",
+      "type": "rect",
+      "locked": true,
+      "x": 93,
+      "y": 170,
+      "width": 4,
+      "height": 4,
+      "rotation": 0,
+      "fill": "#00aa00",
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    {
+      "id": "gdot_19",
+      "name": "Graph Dot 19 (In-Range)",
+      "type": "rect",
+      "locked": true,
+      "x": 98,
+      "y": 169,
+      "width": 4,
+      "height": 4,
+      "rotation": 0,
+      "fill": "#00aa00",
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    {
+      "id": "gdot_20",
+      "name": "Graph Dot 20 (In-Range)",
+      "type": "rect",
+      "locked": true,
+      "x": 103,
+      "y": 169,
+      "width": 4,
+      "height": 4,
+      "rotation": 0,
+      "fill": "#00aa00",
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    {
+      "id": "gdot_21",
+      "name": "Graph Dot 21 (In-Range)",
+      "type": "rect",
+      "locked": true,
+      "x": 108,
+      "y": 168,
+      "width": 4,
+      "height": 4,
+      "rotation": 0,
+      "fill": "#00aa00",
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    {
+      "id": "gdot_22",
+      "name": "Graph Dot 22 (High)",
+      "type": "rect",
+      "locked": true,
+      "x": 113,
+      "y": 167,
+      "width": 4,
+      "height": 4,
+      "rotation": 0,
+      "fill": "#aaaa00",
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    {
+      "id": "gdot_23",
+      "name": "Graph Dot 23 (High)",
+      "type": "rect",
+      "locked": true,
+      "x": 118,
+      "y": 165,
+      "width": 4,
+      "height": 4,
+      "rotation": 0,
+      "fill": "#aaaa00",
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    {
+      "id": "gdot_24",
+      "name": "Graph Dot 24 (High)",
+      "type": "rect",
+      "locked": true,
+      "x": 123,
+      "y": 163,
+      "width": 4,
+      "height": 4,
+      "rotation": 0,
+      "fill": "#aaaa00",
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    {
+      "id": "gdot_25",
+      "name": "Graph Dot 25 (High)",
+      "type": "rect",
+      "locked": true,
+      "x": 128,
+      "y": 161,
+      "width": 4,
+      "height": 4,
+      "rotation": 0,
+      "fill": "#aaaa00",
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    {
+      "id": "gdot_26",
+      "name": "Graph Dot 26 (High)",
+      "type": "rect",
+      "locked": true,
+      "x": 133,
+      "y": 159,
+      "width": 4,
+      "height": 4,
+      "rotation": 0,
+      "fill": "#aaaa00",
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    {
+      "id": "gdot_27",
+      "name": "Graph Dot 27 (High)",
+      "type": "rect",
+      "locked": true,
+      "x": 138,
+      "y": 157,
+      "width": 4,
+      "height": 4,
+      "rotation": 0,
+      "fill": "#aaaa00",
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    {
+      "id": "gdot_28",
+      "name": "Graph Dot 28 (High)",
+      "type": "rect",
+      "locked": true,
+      "x": 143,
+      "y": 156,
+      "width": 4,
+      "height": 4,
+      "rotation": 0,
+      "fill": "#aaaa00",
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    {
+      "id": "gdot_29",
+      "name": "Graph Dot 29 (High)",
+      "type": "rect",
+      "locked": true,
+      "x": 148,
+      "y": 157,
+      "width": 4,
+      "height": 4,
+      "rotation": 0,
+      "fill": "#aaaa00",
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    {
+      "id": "gdot_30",
+      "name": "Graph Dot 30 (High)",
+      "type": "rect",
+      "locked": true,
+      "x": 153,
+      "y": 159,
+      "width": 4,
+      "height": 4,
+      "rotation": 0,
+      "fill": "#aaaa00",
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    {
+      "id": "gdot_31",
+      "name": "Graph Dot 31 (High)",
+      "type": "rect",
+      "locked": true,
+      "x": 158,
+      "y": 161,
+      "width": 4,
+      "height": 4,
+      "rotation": 0,
+      "fill": "#aaaa00",
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    {
+      "id": "gdot_32",
+      "name": "Graph Dot 32 (High)",
+      "type": "rect",
+      "locked": true,
+      "x": 163,
+      "y": 163,
+      "width": 4,
+      "height": 4,
+      "rotation": 0,
+      "fill": "#aaaa00",
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    {
+      "id": "gdot_33",
+      "name": "Graph Dot 33 (High)",
+      "type": "rect",
+      "locked": true,
+      "x": 168,
+      "y": 165,
+      "width": 4,
+      "height": 4,
+      "rotation": 0,
+      "fill": "#aaaa00",
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    {
+      "id": "gdot_34",
+      "name": "Graph Dot 34 (High)",
+      "type": "rect",
+      "locked": true,
+      "x": 173,
+      "y": 167,
+      "width": 4,
+      "height": 4,
+      "rotation": 0,
+      "fill": "#aaaa00",
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    {
+      "id": "gdot_35",
+      "name": "Graph Dot 35 (In-Range)",
+      "type": "rect",
+      "locked": true,
+      "x": 178,
+      "y": 169,
+      "width": 4,
+      "height": 4,
+      "rotation": 0,
+      "fill": "#00aa00",
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    {
+      "id": "gdot_36",
+      "name": "Graph Dot 36 (In-Range)",
+      "type": "rect",
+      "locked": true,
+      "x": 183,
+      "y": 171,
+      "width": 4,
+      "height": 4,
+      "rotation": 0,
+      "fill": "#00aa00",
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    {
+      "id": "graph_carb_treatment",
+      "name": "Graph Carb Treatment",
+      "type": "rect",
+      "locked": true,
+      "x": 40,
+      "y": 215,
+      "width": 6,
+      "height": 6,
+      "rotation": 0,
+      "fill": "#00aa00",
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    {
+      "id": "graph_bolus_treatment",
+      "name": "Graph Bolus Treatment",
+      "type": "rect",
+      "locked": true,
+      "x": 136,
+      "y": 151,
+      "width": 6,
+      "height": 6,
+      "rotation": 0,
+      "fill": "#0000aa",
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    {
+      "id": "time_12_tick",
+      "name": "12 o-clock Tick",
+      "type": "gpath",
+      "locked": true,
+      "x": 100,
+      "y": 0,
+      "width": 2,
+      "height": 10,
+      "rotation": 0,
+      "stroke": "#ffffff",
+      "strokeWidth": 2,
+      "points": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 10
+        }
+      ]
+    },
+    {
+      "id": "time_6_tick",
+      "name": "6 o-clock Tick",
+      "type": "gpath",
+      "locked": true,
+      "x": 100,
+      "y": 228,
+      "width": 2,
+      "height": 10,
+      "rotation": 0,
+      "stroke": "#ffffff",
+      "strokeWidth": 2,
+      "points": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": -10
+        }
+      ]
+    },
+    {
+      "id": "time_3_tick",
+      "name": "3 o-clock Tick",
+      "type": "gpath",
+      "locked": true,
+      "x": 200,
+      "y": 114,
+      "width": 10,
+      "height": 2,
+      "rotation": 0,
+      "stroke": "#ffffff",
+      "strokeWidth": 2,
+      "points": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": -10,
+          "y": 0
+        }
+      ]
+    },
+    {
+      "id": "time_9_tick",
+      "name": "9 o-clock Tick",
+      "type": "gpath",
+      "locked": true,
+      "x": 0,
+      "y": 114,
+      "width": 10,
+      "height": 2,
+      "rotation": 0,
+      "stroke": "#ffffff",
+      "strokeWidth": 2,
+      "points": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 10,
+          "y": 0
+        }
+      ]
+    },
+    {
+      "id": "tick_1",
+      "name": "1 o-clock Tick",
+      "type": "gpath",
+      "locked": true,
+      "x": 166,
+      "y": 0,
+      "width": 8,
+      "height": 8,
+      "rotation": 0,
+      "stroke": "#888888",
+      "strokeWidth": 1,
+      "points": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": -5,
+          "y": 9
+        }
+      ]
+    },
+    {
+      "id": "tick_2",
+      "name": "2 o-clock Tick",
+      "type": "gpath",
+      "locked": true,
+      "x": 200,
+      "y": 56,
+      "width": 8,
+      "height": 8,
+      "rotation": 0,
+      "stroke": "#888888",
+      "strokeWidth": 1,
+      "points": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": -9,
+          "y": 5
+        }
+      ]
+    },
+    {
+      "id": "tick_4",
+      "name": "4 o-clock Tick",
+      "type": "gpath",
+      "locked": true,
+      "x": 200,
+      "y": 172,
+      "width": 8,
+      "height": 8,
+      "rotation": 0,
+      "stroke": "#888888",
+      "strokeWidth": 1,
+      "points": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": -9,
+          "y": -5
+        }
+      ]
+    },
+    {
+      "id": "tick_5",
+      "name": "5 o-clock Tick",
+      "type": "gpath",
+      "locked": true,
+      "x": 166,
+      "y": 228,
+      "width": 8,
+      "height": 8,
+      "rotation": 0,
+      "stroke": "#888888",
+      "strokeWidth": 1,
+      "points": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": -5,
+          "y": -9
+        }
+      ]
+    },
+    {
+      "id": "tick_7",
+      "name": "7 o-clock Tick",
+      "type": "gpath",
+      "locked": true,
+      "x": 34,
+      "y": 228,
+      "width": 8,
+      "height": 8,
+      "rotation": 0,
+      "stroke": "#888888",
+      "strokeWidth": 1,
+      "points": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 5,
+          "y": -9
+        }
+      ]
+    },
+    {
+      "id": "tick_8",
+      "name": "8 o-clock Tick",
+      "type": "gpath",
+      "locked": true,
+      "x": 0,
+      "y": 172,
+      "width": 8,
+      "height": 8,
+      "rotation": 0,
+      "stroke": "#888888",
+      "strokeWidth": 1,
+      "points": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 9,
+          "y": -5
+        }
+      ]
+    },
+    {
+      "id": "tick_10",
+      "name": "10 o-clock Tick",
+      "type": "gpath",
+      "locked": true,
+      "x": 0,
+      "y": 56,
+      "width": 8,
+      "height": 8,
+      "rotation": 0,
+      "stroke": "#888888",
+      "strokeWidth": 1,
+      "points": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 9,
+          "y": 5
+        }
+      ]
+    },
+    {
+      "id": "tick_11",
+      "name": "11 o-clock Tick",
+      "type": "gpath",
+      "locked": true,
+      "x": 34,
+      "y": 0,
+      "width": 8,
+      "height": 8,
+      "rotation": 0,
+      "stroke": "#888888",
+      "strokeWidth": 1,
+      "points": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 5,
+          "y": 9
+        }
+      ]
+    },
+    {
+      "id": "bg_layer",
+      "name": "BG",
+      "type": "text",
+      "locked": false,
+      "x": 60,
+      "y": 35,
+      "width": 80,
+      "height": 40,
+      "rotation": 0,
+      "stroke": "#000000",
+      "strokeWidth": 0,
+      "fill": "#00ff00",
+      "text": "6.2",
+      "fontSize": 38,
+      "fontFamily": "LECO 1976",
+      "bold": true
+    },
+    {
+      "id": "arrow_layer",
+      "name": "Arrow",
+      "type": "bitmap",
+      "locked": false,
+      "x": 142,
+      "y": 45,
+      "width": 20,
+      "height": 20,
+      "rotation": 0,
+      "stroke": "#000000",
+      "strokeWidth": 0,
+      "dataUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAUUlEQVR4nO3RMQ4AIAgDwOL//4yDi5EEWp1M6IbRExTofB6HV1uGjBUoDxos4E8giWoggdq5wDx8doneYYKtUs0+gcXzWocFpoEEpufmwzpyJtFuFguPFKrCAAAAAElFTkSuQmCC",
+      "fileName": "arrow_flat.png"
+    },
+    {
+      "id": "age_layer",
+      "name": "Age",
+      "type": "text",
+      "locked": false,
+      "x": 145,
+      "y": 10,
+      "width": 45,
+      "height": 24,
+      "rotation": 0,
+      "stroke": "#000000",
+      "strokeWidth": 0,
+      "fill": "#ffffff",
+      "text": "(3')",
+      "fontSize": 18,
+      "fontFamily": "MedodicaRegular",
+      "bold": false
+    },
+    {
+      "id": "delta_layer",
+      "name": "Delta",
+      "type": "text",
+      "locked": false,
+      "x": 10,
+      "y": 10,
+      "width": 75,
+      "height": 24,
+      "rotation": 0,
+      "stroke": "#000000",
+      "strokeWidth": 0,
+      "fill": "#ffffff",
+      "text": "(+3|+5)",
+      "fontSize": 18,
+      "fontFamily": "MedodicaRegular",
+      "bold": false
+    },
+    {
+      "id": "left_val_top",
+      "name": "Basal Rate",
+      "type": "text",
+      "locked": false,
+      "x": 10,
+      "y": 144,
+      "width": 80,
+      "height": 24,
+      "rotation": 0,
+      "stroke": "#000000",
+      "strokeWidth": 0,
+      "fill": "#ffffff",
+      "text": "0.90",
+      "fontSize": 18,
+      "fontFamily": "MedodicaRegular",
+      "bold": false
+    },
+    {
+      "id": "iob_layer",
+      "name": "IOB",
+      "type": "text",
+      "locked": false,
+      "x": 10,
+      "y": 92,
+      "width": 80,
+      "height": 28,
+      "rotation": 0,
+      "stroke": "#000000",
+      "strokeWidth": 0,
+      "fill": "#ffffff",
+      "text": "0.32 U",
+      "fontSize": 24,
+      "fontFamily": "BoldPixels",
+      "bold": true
+    },
+    {
+      "id": "right_iob_detail",
+      "name": "Right IOB Detail",
+      "type": "text",
+      "locked": false,
+      "x": 10,
+      "y": 120,
+      "width": 80,
+      "height": 24,
+      "rotation": 0,
+      "stroke": "#000000",
+      "strokeWidth": 0,
+      "fill": "#ffffff",
+      "text": "(0.02|0.31)",
+      "fontSize": 18,
+      "fontFamily": "MedodicaRegular",
+      "bold": false
+    },
+    {
+      "id": "cob_layer",
+      "name": "COB",
+      "type": "text",
+      "locked": false,
+      "x": 115,
+      "y": 92,
+      "width": 75,
+      "height": 28,
+      "rotation": 0,
+      "stroke": "#000000",
+      "strokeWidth": 0,
+      "fill": "#ffffff",
+      "text": "0g",
+      "fontSize": 24,
+      "fontFamily": "BoldPixels",
+      "bold": true
+    },
+    {
+      "id": "date_layer",
+      "name": "Date",
+      "type": "text",
+      "locked": false,
+      "x": 115,
+      "y": 120,
+      "width": 75,
+      "height": 24,
+      "rotation": 0,
+      "stroke": "#000000",
+      "strokeWidth": 0,
+      "fill": "#ffffff",
+      "text": "9 Aug",
+      "fontSize": 18,
+      "fontFamily": "MedodicaRegular",
+      "bold": false
+    },
+    {
+      "id": "gpath_hour_hand",
+      "name": "Hour Hand",
+      "type": "gpath",
+      "locked": false,
+      "x": 100,
+      "y": 114,
+      "width": 25,
+      "height": 35,
+      "rotation": 0,
+      "stroke": "#ffffff",
+      "strokeWidth": 5,
+      "points": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": -25,
+          "y": -35
+        }
+      ]
+    },
+    {
+      "id": "gpath_minute_hand",
+      "name": "Minute Hand",
+      "type": "gpath",
+      "locked": false,
+      "x": 100,
+      "y": 114,
+      "width": 15,
+      "height": 65,
+      "rotation": 0,
+      "stroke": "#ffffff",
+      "strokeWidth": 3,
+      "points": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 18,
+          "y": -72
+        }
+      ]
+    }
+  ]
+}

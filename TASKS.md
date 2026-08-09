@@ -62,3 +62,64 @@ This file outlines the step-by-step roadmap for building the AndroidAPS Pebble T
 - [x] **4.4: Verify Safety Guards (Boundary Test)**
   - Send invalid trend indices: `pebble appmessage send 0:int32:95 1:int32:15 4:int32:$(date +%s)` and `pebble appmessage send 0:int32:95 1:int32:-2 4:int32:$(date +%s)`.
   - **Verification:** Confirm that the watchface does not crash, logs warnings in `pebble logs`, and falls back to displaying the `RESOURCE_ID_ARROW_NONE` (neutral gray `??` arrow).
+
+---
+
+## v2 Upgrade: Robust Architecture (plan.md)
+
+### Phase 1: Timekeeping & Core BG Display
+
+- [x] **Task 1.1 — State + Storage Layer (TDD)**
+  - Expanded `AAPSState` struct in `src/c/logic.h` with all v2 fields (delta, avg_delta, date_str, iob, cob, basal, iob_detail, bg_history, history_count, low_target, high_target, is_mmol).
+  - Created `src/c/state_store.h` and `src/c/state_store.c` (Pebble persist API wrapper).
+  - Added `tests/test_logic.c` tests: `test_state_store_roundtrip`, `test_state_store_empty`.
+  - **Verification:** `gcc -Wall -Wextra src/c/logic.c tests/test_logic.c -o test_runner && ./test_runner` → `All host tests passed successfully!` ✅
+
+- [x] **Task 1.2 — pebble-scalable Integration + Layer Refactor**
+  - Rewrote `src/c/pebble_watchface.c` with `#include <pebble-scalable/pebble-scalable.h>` and `#include "state_store.h"`.
+  - Replaced all hardcoded pixel coordinates with `scl_x()` / `scl_y()` from the responsive layout table.
+  - `app_message_open` expanded from `(64,64)` to `(256,256)`.
+  - Added DELTA and AVG_DELTA string key parsing.
+  - State loaded from flash on startup (`state_store_load`), saved on every AppMessage receipt.
+  - **Verification:** `pebble build` succeeds ✅
+
+- [x] **Task 1.3 — Analog Clock (Background Canvas + Hands Layer)**
+  - Added `s_background_layer` (cardinal ticks + 8 diagonal corner ticks).
+  - Added `s_hands_layer` with `HOUR_HAND_INFO` and `MINUTE_HAND_INFO` GPath data.
+  - Tick handler marks hands layer dirty every minute.
+  - **Verification:** `pebble build` succeeds ✅
+
+- [x] **Phase 1 Visual Verification Gate**
+  - Deploy to emery emulator, take screenshots, verify analog hands, ticks, BG display, persistence. ✅
+  - **Added:** Clock hand angle unit tests (`calculate_hour_angle`, `calculate_minute_angle`) verified on host (`test_clock_angles` test case). ✅
+
+### Phase 2: Pump & Loop Status Columns
+
+- [x] **Task 2.1 — Expand AAPSState + Logic (TDD)**
+  - Implemented `update_aaps_status()` in `logic.c` / `logic.h`.
+  - Added tests: `test_update_status_strings`, `test_update_status_truncation`.
+  - **Verification:** All host tests pass ✅
+
+- [x] **Task 2.2 — Add TextLayers and AppMessage Parse**
+  - Added `s_iob_layer`, `s_iob_detail_layer`, `s_basal_layer`, `s_cob_layer`, `s_date_layer` TextLayers with scalable layout.
+  - All 12 AppMessage keys parsed in `inbox_received_callback`.
+  - `package.json` updated with all 12 keys (IOB=2, COB=3, BASAL=5, IOB_DETAIL=6, DELTA=7, AVG_DELTA=8, GLUCOSE_HISTORY=9, LOW_TARGET=10, HIGH_TARGET=11).
+  - **Verification:** `pebble build` succeeds ✅
+
+- [x] **Phase 2 Visual Verification Gate**
+  - Send pump status data, take screenshot, verify left/right columns. ✅
+
+### Phase 3: Glucose History Graph
+
+- [x] **Task 3.1 — History Logic (TDD)**
+  - Implemented `add_to_history()`, `shift_history_left()`, `calculate_graph_y()` in `logic.c`.
+  - Added tests: `test_add_to_history`, `test_shift_history_left`, `test_calculate_graph_y`, `test_target_defaults`.
+  - **Verification:** All host tests pass ✅
+
+- [x] **Task 3.2 — Graph Canvas Rendering**
+  - Added `s_graph_layer` with `graph_layer_update_proc` drawing dashed target lines and colored glucose dot/line curve.
+  - Stale data slot insertion in AppMessage callback (gap detection via `shift_history_left`).
+  - **Verification:** `pebble build` succeeds ✅
+
+- [x] **Phase 3 Visual Verification Gate**
+  - Send 36-byte glucose history, take screenshot, verify dashed lines, curve, dot colors. ✅

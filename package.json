@@ -2,9 +2,13 @@
   "name": "pebble_aaps_watchface",
   "author": "AAPS Pebble Developer",
   "version": "1.0.0",
-  "keywords": ["pebble-app"],
+  "keywords": [
+    "pebble-app"
+  ],
   "private": true,
-  "dependencies": {},
+  "dependencies": {
+    "pebble-scalable": "^2.3.0"
+  },
   "pebble": {
     "displayName": "AAPS Watchface",
     "uuid": "54d3008f-e144-4712-b201-24bc515c40ba",
@@ -19,10 +23,29 @@
     "messageKeys": {
       "BG": 0,
       "TREND": 1,
-      "TIME": 4
+      "IOB": 2,
+      "COB": 3,
+      "TIME": 4,
+      "BASAL": 5,
+      "IOB_DETAIL": 6,
+      "DELTA": 7,
+      "AVG_DELTA": 8,
+      "GLUCOSE_HISTORY": 9,
+      "LOW_TARGET": 10,
+      "HIGH_TARGET": 11
     },
     "resources": {
       "media": [
+        {
+          "type": "png",
+          "name": "HIGH_TARGET_DASHED",
+          "file": "images/high_target_dashed.png"
+        },
+        {
+          "type": "png",
+          "name": "LOW_TARGET_DASHED",
+          "file": "images/low_target_dashed.png"
+        },
         {
           "type": "png",
           "name": "ARROW_NONE",
