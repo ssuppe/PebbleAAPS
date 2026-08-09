@@ -554,7 +554,7 @@ static void init() {
   tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
   app_message_register_inbox_received(inbox_received_callback);
   app_message_register_inbox_dropped(inbox_dropped_callback);
-  app_message_open(256, 256);
+  app_message_open(512, 256);
 }
 
 static void deinit() {
