@@ -445,37 +445,37 @@ static void main_window_load(Window *window) {
   text_layer_set_text_alignment(s_age_layer, GTextAlignmentRight);
   layer_add_child(window_layer, text_layer_get_layer(s_age_layer));
 
-  // IOB: x=10 y=92 w=90 h=28 -> 10*1000/200 = 50, 92*1000/228 = 404, 90*1000/200 = 450, 28*1000/228 = 123
-  s_iob_layer = text_layer_create(GRect(scl_x(50), scl_y(404), scl_x(450), scl_y(123)));
+  // IOB: x=10 y=92 w=100 h=28 -> 10*1000/200 = 50, 92*1000/228 = 404, 100*1000/200 = 500, 28*1000/228 = 123
+  s_iob_layer = text_layer_create(GRect(scl_x(50), scl_y(404), scl_x(500), scl_y(123)));
   text_layer_set_background_color(s_iob_layer, GColorClear);
   text_layer_set_text_color(s_iob_layer, GColorWhite);
   text_layer_set_font(s_iob_layer, scl_get_font(1));
   layer_add_child(window_layer, text_layer_get_layer(s_iob_layer));
 
-  // IOB Detail: x=10 y=120 w=80 h=27 -> 10*1000/200 = 50, 120*1000/228 = 526, 80*1000/200 = 400, 27*1000/228 = 118
-  s_iob_detail_layer = text_layer_create(GRect(scl_x(50), scl_y(526), scl_x(400), scl_y(118)));
+  // IOB Detail: x=10 y=120 w=115 h=27 -> 10*1000/200 = 50, 120*1000/228 = 526, 115*1000/200 = 575, 27*1000/228 = 118
+  s_iob_detail_layer = text_layer_create(GRect(scl_x(50), scl_y(526), scl_x(575), scl_y(118)));
   text_layer_set_background_color(s_iob_detail_layer, GColorClear);
   text_layer_set_text_color(s_iob_detail_layer, GColorWhite);
   text_layer_set_font(s_iob_detail_layer, scl_get_font(3)); // Larger font (index 3)
   layer_add_child(window_layer, text_layer_get_layer(s_iob_detail_layer));
 
-  // Basal: x=10 y=144 w=80 h=27 -> 10*1000/200 = 50, 144*1000/228 = 632, 80*1000/200 = 400, 27*1000/228 = 118
-  s_basal_layer = text_layer_create(GRect(scl_x(50), scl_y(632), scl_x(400), scl_y(118)));
+  // Basal: x=10 y=144 w=115 h=27 -> 10*1000/200 = 50, 144*1000/228 = 632, 115*1000/200 = 575, 27*1000/228 = 118
+  s_basal_layer = text_layer_create(GRect(scl_x(50), scl_y(632), scl_x(575), scl_y(118)));
   text_layer_set_background_color(s_basal_layer, GColorClear);
   text_layer_set_text_color(s_basal_layer, GColorWhite);
   text_layer_set_font(s_basal_layer, scl_get_font(3)); // Larger font (index 3)
   layer_add_child(window_layer, text_layer_get_layer(s_basal_layer));
 
-  // COB: x=100 y=92 w=90 h=28 -> 100*1000/200 = 500, 92*1000/228 = 404, 90*1000/200 = 450, 28*1000/228 = 123
-  s_cob_layer = text_layer_create(GRect(scl_x(500), scl_y(404), scl_x(450), scl_y(123)));
+  // COB: x=90 y=92 w=100 h=28 -> 90*1000/200 = 450, 92*1000/228 = 404, 100*1000/200 = 500, 28*1000/228 = 123
+  s_cob_layer = text_layer_create(GRect(scl_x(450), scl_y(404), scl_x(500), scl_y(123)));
   text_layer_set_background_color(s_cob_layer, GColorClear);
   text_layer_set_text_color(s_cob_layer, GColorWhite);
   text_layer_set_font(s_cob_layer, scl_get_font(1));
   text_layer_set_text_alignment(s_cob_layer, GTextAlignmentRight);
   layer_add_child(window_layer, text_layer_get_layer(s_cob_layer));
 
-  // Date: x=115 y=120 w=75 h=27 -> 115*1000/200 = 575, 120*1000/228 = 526, 75*1000/200 = 375, 27*1000/228 = 118
-  s_date_layer = text_layer_create(GRect(scl_x(575), scl_y(526), scl_x(375), scl_y(118)));
+  // Date: x=125 y=120 w=65 h=27 -> 125*1000/200 = 625, 120*1000/228 = 526, 65*1000/200 = 325, 27*1000/228 = 118
+  s_date_layer = text_layer_create(GRect(scl_x(625), scl_y(526), scl_x(325), scl_y(118)));
   text_layer_set_background_color(s_date_layer, GColorClear);
   text_layer_set_text_color(s_date_layer, GColorWhite);
   text_layer_set_font(s_date_layer, scl_get_font(3)); // Larger font (index 3)
@@ -532,8 +532,8 @@ static void init() {
   // Font styling configuration
   scl_set_fonts(0, {.o = fonts_get_system_font(FONT_KEY_GOTHIC_14),
                     .e = fonts_get_system_font(FONT_KEY_GOTHIC_18)});
-  scl_set_fonts(1, {.o = fonts_get_system_font(FONT_KEY_GOTHIC_14_BOLD),
-                    .e = fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD)});
+  scl_set_fonts(1, {.o = fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD),
+                    .e = fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD)});
   scl_set_fonts(2, {.o = fonts_get_system_font(FONT_KEY_LECO_36_BOLD_NUMBERS),
                     .e = fonts_get_system_font(FONT_KEY_LECO_38_BOLD_NUMBERS)});
   scl_set_fonts(3, {.o = fonts_get_system_font(FONT_KEY_GOTHIC_14_BOLD),
