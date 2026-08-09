@@ -17,6 +17,11 @@
     "targetPlatforms": [
       "emery"
     ],
+    "screenshots": {
+      "emery": [
+        "resources/screenshots/emery_screenshot.png"
+      ]
+    },
     "watchapp": {
       "watchface": true,
       "appIcon": "APP_DEMO_ICON"
