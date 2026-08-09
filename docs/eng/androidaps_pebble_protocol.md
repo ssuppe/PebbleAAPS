@@ -107,7 +107,7 @@ val readings = iobCobCalculator.ads.getBgReadingsDataTableCopy()
 val sortedReadings = readings.filter { it.isValid }.sortedByDescending { it.timestamp }
 
 val historySize = minOf(sortedReadings.size, 36)
-val historyBytes = ByteArray(36) { 0 } // default to 0 representing empty slots
+val historyBytes = ByteArray(36) { 0.toByte() } // default to 0 representing empty slots
 
 for (i in 0 until historySize) {
     val reading = sortedReadings[i]
