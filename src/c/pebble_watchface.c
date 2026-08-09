@@ -430,23 +430,23 @@ static void main_window_load(Window *window) {
   bitmap_layer_set_compositing_mode(s_arrow_layer, GCompOpSet);
   layer_add_child(window_layer, bitmap_layer_get_layer(s_arrow_layer));
 
-  // Delta: x=10 y=10 w=75 h=24 -> 10*1000/200 = 50, 10*1000/228 = 44, 75*1000/200 = 375, 24*1000/228 = 105
-  s_delta_layer = text_layer_create(GRect(scl_x(50), scl_y(44), scl_x(375), scl_y(105)));
+  // Delta: x=10 y=10 w=90 h=27 -> 10*1000/200 = 50, 10*1000/228 = 44, 90*1000/200 = 450, 27*1000/228 = 118
+  s_delta_layer = text_layer_create(GRect(scl_x(50), scl_y(44), scl_x(450), scl_y(118)));
   text_layer_set_background_color(s_delta_layer, GColorClear);
   text_layer_set_text_color(s_delta_layer, GColorWhite);
-  text_layer_set_font(s_delta_layer, scl_get_font(0));
+  text_layer_set_font(s_delta_layer, scl_get_font(4)); // Bold Gothic 18 (index 4)
   layer_add_child(window_layer, text_layer_get_layer(s_delta_layer));
 
-  // Age: x=145 y=10 w=45 h=24 -> 145*1000/200 = 725, 10*1000/228 = 44, 45*1000/200 = 225, 24*1000/228 = 105
-  s_age_layer = text_layer_create(GRect(scl_x(725), scl_y(44), scl_x(225), scl_y(105)));
+  // Age: x=135 y=10 w=55 h=27 -> 135*1000/200 = 675, 10*1000/228 = 44, 55*1000/200 = 275, 27*1000/228 = 118
+  s_age_layer = text_layer_create(GRect(scl_x(675), scl_y(44), scl_x(275), scl_y(118)));
   text_layer_set_background_color(s_age_layer, GColorClear);
   text_layer_set_text_color(s_age_layer, GColorWhite);
-  text_layer_set_font(s_age_layer, scl_get_font(0));
+  text_layer_set_font(s_age_layer, scl_get_font(4)); // Bold Gothic 18 (index 4)
   text_layer_set_text_alignment(s_age_layer, GTextAlignmentRight);
   layer_add_child(window_layer, text_layer_get_layer(s_age_layer));
 
-  // IOB: x=10 y=92 w=80 h=28 -> 10*1000/200 = 50, 92*1000/228 = 404, 80*1000/200 = 400, 28*1000/228 = 123
-  s_iob_layer = text_layer_create(GRect(scl_x(50), scl_y(404), scl_x(400), scl_y(123)));
+  // IOB: x=10 y=92 w=95 h=28 -> 10*1000/200 = 50, 92*1000/228 = 404, 95*1000/200 = 475, 28*1000/228 = 123
+  s_iob_layer = text_layer_create(GRect(scl_x(50), scl_y(404), scl_x(475), scl_y(123)));
   text_layer_set_background_color(s_iob_layer, GColorClear);
   text_layer_set_text_color(s_iob_layer, GColorWhite);
   text_layer_set_font(s_iob_layer, scl_get_font(1));
@@ -466,8 +466,8 @@ static void main_window_load(Window *window) {
   text_layer_set_font(s_basal_layer, scl_get_font(3)); // Larger font (index 3)
   layer_add_child(window_layer, text_layer_get_layer(s_basal_layer));
 
-  // COB: x=115 y=92 w=75 h=28 -> 115*1000/200 = 575, 92*1000/228 = 404, 75*1000/200 = 375, 28*1000/228 = 123
-  s_cob_layer = text_layer_create(GRect(scl_x(575), scl_y(404), scl_x(375), scl_y(123)));
+  // COB: x=110 y=92 w=80 h=28 -> 110*1000/200 = 550, 92*1000/228 = 404, 80*1000/200 = 400, 28*1000/228 = 123
+  s_cob_layer = text_layer_create(GRect(scl_x(550), scl_y(404), scl_x(400), scl_y(123)));
   text_layer_set_background_color(s_cob_layer, GColorClear);
   text_layer_set_text_color(s_cob_layer, GColorWhite);
   text_layer_set_font(s_cob_layer, scl_get_font(1));
@@ -538,6 +538,8 @@ static void init() {
                     .e = fonts_get_system_font(FONT_KEY_LECO_38_BOLD_NUMBERS)});
   scl_set_fonts(3, {.o = fonts_get_system_font(FONT_KEY_GOTHIC_14_BOLD),
                     .e = fonts_get_system_font(FONT_KEY_GOTHIC_24)});
+  scl_set_fonts(4, {.o = fonts_get_system_font(FONT_KEY_GOTHIC_14_BOLD),
+                    .e = fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD)});
 
   init_aaps_state(&s_state);
   state_store_load(&s_state);
