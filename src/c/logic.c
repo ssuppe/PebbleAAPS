@@ -50,6 +50,22 @@ void format_age_string(char *buffer, size_t buffer_size,
   }
 }
 
+void format_bg_string(char *buffer, size_t buffer_size, int32_t bg_value, bool is_mmol, bool has_data) {
+  if (!buffer || buffer_size == 0) return;
+  if (!has_data) {
+    snprintf(buffer, buffer_size, "---");
+    return;
+  }
+  if (is_mmol) {
+    int32_t val_x10 = (bg_value * 100000 + 90091) / 180182; // round to nearest tenth using exact 18.0182 conversion ratio
+    int32_t whole = val_x10 / 10;
+    int32_t frac = val_x10 % 10;
+    snprintf(buffer, buffer_size, "%d.%d", (int)whole, (int)frac);
+  } else {
+    snprintf(buffer, buffer_size, "%d", (int)bg_value);
+  }
+}
+
 ColorState get_age_color_state(time_t current_time, time_t rx_time, bool has_data) {
   if (!has_data) return COLOR_STATE_NORMAL;
   int delta_seconds = (int)(current_time - rx_time);

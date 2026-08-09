@@ -128,6 +128,32 @@ void test_age_color_state() {
   printf("test_age_color_state passed!\n");
 }
 
+void test_format_bg_string() {
+  char buf[16];
+
+  // Test no data
+  format_bg_string(buf, sizeof(buf), 100, false, false);
+  assert(strcmp(buf, "---") == 0);
+
+  // Test mg/dL formatting
+  format_bg_string(buf, sizeof(buf), 120, false, true);
+  assert(strcmp(buf, "120") == 0);
+  format_bg_string(buf, sizeof(buf), 72, false, true);
+  assert(strcmp(buf, "72") == 0);
+
+  // Test mmol/L formatting (mg/dL / 18.0182)
+  format_bg_string(buf, sizeof(buf), 120, true, true);
+  assert(strcmp(buf, "6.7") == 0);
+  format_bg_string(buf, sizeof(buf), 100, true, true);
+  assert(strcmp(buf, "5.5") == 0);
+  format_bg_string(buf, sizeof(buf), 180, true, true);
+  assert(strcmp(buf, "10.0") == 0);
+  format_bg_string(buf, sizeof(buf), 72, true, true);
+  assert(strcmp(buf, "4.0") == 0);
+
+  printf("test_format_bg_string passed!\n");
+}
+
 // ══════════════════════════════════════════════════════════════
 // Task 1.1 — State store round-trip tests
 // ══════════════════════════════════════════════════════════════
@@ -284,6 +310,7 @@ int main() {
   test_safe_trend_index();
   test_format_age_string();
   test_age_color_state();
+  test_format_bg_string();
 
   // Task 1.1 — state store
   test_state_store_roundtrip();

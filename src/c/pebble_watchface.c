@@ -77,11 +77,7 @@ static const uint32_t ARROW_RESOURCE_IDS[] = {
 
 static void update_bg_display() {
   static char bg_buffer[8];
-  if (!s_state.has_data) {
-    snprintf(bg_buffer, sizeof(bg_buffer), "---");
-  } else {
-    snprintf(bg_buffer, sizeof(bg_buffer), "%d", (int)s_state.bg_value);
-  }
+  format_bg_string(bg_buffer, sizeof(bg_buffer), s_state.bg_value, s_state.is_mmol, s_state.has_data);
   text_layer_set_text(s_bg_layer, bg_buffer);
 }
 
@@ -370,9 +366,13 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 
   Tuple *low_t  = dict_find(iterator, MESSAGE_KEY_LOW_TARGET);
   Tuple *high_t = dict_find(iterator, MESSAGE_KEY_HIGH_TARGET);
+  Tuple *units_t = dict_find(iterator, MESSAGE_KEY_UNITS);
 
   if (low_t  && low_t->type  == TUPLE_INT) s_state.low_target  = low_t->value->int32;
   if (high_t && high_t->type == TUPLE_INT) s_state.high_target = high_t->value->int32;
+  if (units_t && units_t->type == TUPLE_INT) {
+    s_state.is_mmol = (units_t->value->int32 == 1);
+  }
 
   Tuple *hist_t = dict_find(iterator, MESSAGE_KEY_GLUCOSE_HISTORY);
   if (hist_t && hist_t->type == TUPLE_BYTE_ARRAY &&

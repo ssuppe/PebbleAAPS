@@ -32,7 +32,8 @@
       "AVG_DELTA": 8,
       "GLUCOSE_HISTORY": 9,
       "LOW_TARGET": 10,
-      "HIGH_TARGET": 11
+      "HIGH_TARGET": 11,
+      "UNITS": 12
     },
     "resources": {
       "media": [

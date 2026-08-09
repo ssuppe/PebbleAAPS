@@ -24,6 +24,7 @@ object PebbleKeys {
     const val GLUCOSE_HISTORY = 9  // Byte Array (36 bytes representing BG/2)
     const val LOW_TARGET = 10      // int32 (low glucose target line, e.g. 70)
     const val HIGH_TARGET = 11     // int32 (high glucose target line, e.g. 180)
+    const val UNITS = 12           // int32 (0 = mg/dL, 1 = mmol/L)
 }
 ```
 
@@ -47,7 +48,8 @@ data class EnrichedData(
     val avgDelta: String?,
     val history: ByteArray?,
     val lowTarget: Int?,
-    val highTarget: Int?
+    val highTarget: Int?,
+    val units: Int?
 )
 ```
 
@@ -96,6 +98,9 @@ if (config.appInitialized && profile != null) {
         delta = deltaString(glucoseStatus.delta, glucoseStatus.delta * Constants.MGDL_TO_MMOLL, units)
         avgDelta = deltaString(glucoseStatus.shortAvgDelta, glucoseStatus.shortAvgDelta * Constants.MGDL_TO_MMOLL, units)
     }
+
+    // 6. Units (0 = mg/dL, 1 = mmol/L)
+    val unitsPref = if (units == GlucoseUnits.MMOL) 1 else 0
 }
 ```
 
@@ -156,6 +161,9 @@ class PebbleDataMapper @Inject constructor() {
         
         // 5. Glucose History
         data.history?.let { dict.addBytes(PebbleKeys.GLUCOSE_HISTORY, it) }
+        
+        // 6. Units (0 = mg/dL, 1 = mmol/L)
+        data.units?.let { dict.addInt32(PebbleKeys.UNITS, it) }
 
         return dict
     }
