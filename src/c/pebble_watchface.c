@@ -199,11 +199,11 @@ static void background_layer_update_proc(Layer *layer, GContext *ctx) {
 // Using GPath to allow rotation around (0,0) before shifting to Center.
 static const GPathInfo HOUR_HAND_INFO = {
   .num_points = 2,
-  .points     = (GPoint []) { {0, 0}, {0, -38} }  // Hand length ~38px
+  .points     = (GPoint []) { {0, 0}, {0, -48} }  // Hand length ~48px (was 38)
 };
 static const GPathInfo MINUTE_HAND_INFO = {
   .num_points = 2,
-  .points     = (GPoint []) { {0, 0}, {0, -72} }  // Hand length ~72px
+  .points     = (GPoint []) { {0, 0}, {0, -85} }  // Hand length ~85px (was 72)
 };
 
 static void hands_layer_update_proc(Layer *layer, GContext *ctx) {
@@ -220,18 +220,18 @@ static void hands_layer_update_proc(Layer *layer, GContext *ctx) {
   // Minute hand
   gpath_rotate_to(s_minute_path, min_angle);
   gpath_move_to(s_minute_path, center);
-  graphics_context_set_stroke_width(ctx, 3);
+  graphics_context_set_stroke_width(ctx, 4); // Thicker (was 3)
   gpath_draw_outline(ctx, s_minute_path);
 
   // Hour hand
   gpath_rotate_to(s_hour_path, hour_angle);
   gpath_move_to(s_hour_path, center);
-  graphics_context_set_stroke_width(ctx, 5);
+  graphics_context_set_stroke_width(ctx, 7); // Thicker (was 5)
   gpath_draw_outline(ctx, s_hour_path);
 
   // Center dot
   graphics_context_set_fill_color(ctx, GColorBlack);
-  graphics_fill_circle(ctx, center, 4);
+  graphics_fill_circle(ctx, center, 5); // Larger dot for thicker hands
   graphics_context_set_fill_color(ctx, GColorWhite);
   graphics_fill_circle(ctx, center, 2);
 }
@@ -452,18 +452,18 @@ static void main_window_load(Window *window) {
   text_layer_set_font(s_iob_layer, scl_get_font(1));
   layer_add_child(window_layer, text_layer_get_layer(s_iob_layer));
 
-  // IOB Detail: x=10 y=120 w=80 h=24 -> 10*1000/200 = 50, 120*1000/228 = 526, 80*1000/200 = 400, 24*1000/228 = 105
-  s_iob_detail_layer = text_layer_create(GRect(scl_x(50), scl_y(526), scl_x(400), scl_y(105)));
+  // IOB Detail: x=10 y=120 w=80 h=27 -> 10*1000/200 = 50, 120*1000/228 = 526, 80*1000/200 = 400, 27*1000/228 = 118
+  s_iob_detail_layer = text_layer_create(GRect(scl_x(50), scl_y(526), scl_x(400), scl_y(118)));
   text_layer_set_background_color(s_iob_detail_layer, GColorClear);
   text_layer_set_text_color(s_iob_detail_layer, GColorWhite);
-  text_layer_set_font(s_iob_detail_layer, scl_get_font(0));
+  text_layer_set_font(s_iob_detail_layer, scl_get_font(3)); // Larger font (index 3)
   layer_add_child(window_layer, text_layer_get_layer(s_iob_detail_layer));
 
-  // Basal: x=10 y=144 w=80 h=24 -> 10*1000/200 = 50, 144*1000/228 = 632, 80*1000/200 = 400, 24*1000/228 = 105
-  s_basal_layer = text_layer_create(GRect(scl_x(50), scl_y(632), scl_x(400), scl_y(105)));
+  // Basal: x=10 y=144 w=80 h=27 -> 10*1000/200 = 50, 144*1000/228 = 632, 80*1000/200 = 400, 27*1000/228 = 118
+  s_basal_layer = text_layer_create(GRect(scl_x(50), scl_y(632), scl_x(400), scl_y(118)));
   text_layer_set_background_color(s_basal_layer, GColorClear);
   text_layer_set_text_color(s_basal_layer, GColorWhite);
-  text_layer_set_font(s_basal_layer, scl_get_font(0));
+  text_layer_set_font(s_basal_layer, scl_get_font(3)); // Larger font (index 3)
   layer_add_child(window_layer, text_layer_get_layer(s_basal_layer));
 
   // COB: x=115 y=92 w=75 h=28 -> 115*1000/200 = 575, 92*1000/228 = 404, 75*1000/200 = 375, 28*1000/228 = 123
@@ -474,11 +474,11 @@ static void main_window_load(Window *window) {
   text_layer_set_text_alignment(s_cob_layer, GTextAlignmentRight);
   layer_add_child(window_layer, text_layer_get_layer(s_cob_layer));
 
-  // Date: x=115 y=120 w=75 h=24 -> 115*1000/200 = 575, 120*1000/228 = 526, 75*1000/200 = 375, 24*1000/228 = 105
-  s_date_layer = text_layer_create(GRect(scl_x(575), scl_y(526), scl_x(375), scl_y(105)));
+  // Date: x=115 y=120 w=75 h=27 -> 115*1000/200 = 575, 120*1000/228 = 526, 75*1000/200 = 375, 27*1000/228 = 118
+  s_date_layer = text_layer_create(GRect(scl_x(575), scl_y(526), scl_x(375), scl_y(118)));
   text_layer_set_background_color(s_date_layer, GColorClear);
   text_layer_set_text_color(s_date_layer, GColorWhite);
-  text_layer_set_font(s_date_layer, scl_get_font(0));
+  text_layer_set_font(s_date_layer, scl_get_font(3)); // Larger font (index 3)
   text_layer_set_text_alignment(s_date_layer, GTextAlignmentRight);
   layer_add_child(window_layer, text_layer_get_layer(s_date_layer));
 
@@ -536,6 +536,8 @@ static void init() {
                     .e = fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD)});
   scl_set_fonts(2, {.o = fonts_get_system_font(FONT_KEY_LECO_36_BOLD_NUMBERS),
                     .e = fonts_get_system_font(FONT_KEY_LECO_38_BOLD_NUMBERS)});
+  scl_set_fonts(3, {.o = fonts_get_system_font(FONT_KEY_GOTHIC_14_BOLD),
+                    .e = fonts_get_system_font(FONT_KEY_GOTHIC_24)});
 
   init_aaps_state(&s_state);
   state_store_load(&s_state);
