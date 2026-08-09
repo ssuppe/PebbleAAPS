@@ -18,7 +18,8 @@
       "emery"
     ],
     "watchapp": {
-      "watchface": true
+      "watchface": true,
+      "appIcon": "APP_DEMO_ICON"
     },
     "messageKeys": {
       "BG": 0,
@@ -37,6 +38,12 @@
     },
     "resources": {
       "media": [
+        {
+          "type": "png",
+          "name": "APP_DEMO_ICON",
+          "file": "images/watchface_icon.png",
+          "menuIcon": true
+        },
         {
           "type": "png",
           "name": "HIGH_TARGET_DASHED",
