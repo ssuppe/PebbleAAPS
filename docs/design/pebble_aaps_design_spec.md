@@ -52,17 +52,17 @@ The core objective is to create a **highly legible, glanceable, and trustworthy 
 
 | Layer ID | Name | Type | X | Y | Width | Height | Font / Size | Color | Description |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `bg_layer` | **BG** | Text | 60 | 35 | 80 | 40 | `LECO 1976` (38px Bold) | `#00ff00` (Green) | Blood glucose reading value. |
-| `arrow_layer` | **Arrow** | Bitmap | 134 | 45 | 20 | 20 | N/A | `#00ff00` (Green) | Aligned vertically with BG text center. |
-| `delta_layer` | **Delta** | Text | 10 | 10 | 75 | 24 | `Medodica` (18px Regular) | `#ffffff` (White) | Rate of change trend `(+3\|+5)`. |
-| `age_layer` | **Age** | Text | 145 | 10 | 45 | 24 | `Medodica` (18px Regular) | `#ffffff` (White) | Reading sync age `(3')`. |
-| `iob_layer` | **IOB** | Text | 10 | 92 | 80 | 28 | `BoldPixels` (24px Bold) | `#ffffff` (White) | Total active insulin on board. |
-| `right_iob_detail` | **IOB Detail** | Text | 10 | 120 | 80 | 24 | `Medodica` (18px Regular) | `#ffffff` (White) | Detailed bolus/basal split. |
-| `left_val_top` | **Basal Rate** | Text | 10 | 144 | 80 | 24 | `Medodica` (18px Regular) | `#ffffff` (White) | Active pump basal profile rate. |
-| `cob_layer` | **COB** | Text | 115 | 92 | 75 | 28 | `BoldPixels` (24px Bold) | `#ffffff` (White) | Active carbs on board. |
-| `date_layer` | **Date** | Text | 115 | 120 | 75 | 24 | `Medodica` (18px Regular) | `#ffffff` (White) | Calendar date. |
-| `graph_high_target` | **High Target** | Bitmap | 0 | 170 | 200 | 1 | N/A | `#555555` (Gray) | Dashed 3px target boundary. |
-| `graph_low_target` | **Low Target** | Bitmap | 0 | 195 | 200 | 1 | N/A | `#aa0000` (Red) | Dashed 3px target boundary. |
+| `bg_layer` | **BG** | Text | 60 | 35 | 80 | 40 | `LECO 38 Bold` (scl font 2) | `#00ff00` (Green) | Blood glucose reading value. |
+| `arrow_layer` | **Arrow** | Bitmap | 142 | 45 | 20 | 20 | N/A | `#00ff00` (Green) | Aligned vertically with BG text center. |
+| `delta_layer` | **Delta** | Text | 10 | 10 | 90 | 27 | `Gothic 18 Bold` (scl font 4) | `#ffffff` (White) | Rate of change trend `(+3\|+5)`. |
+| `age_layer` | **Age** | Text | 135 | 10 | 55 | 27 | `Gothic 18 Bold` (scl font 4) | `#ffffff` (White) | Reading sync age `(3')`. |
+| `iob_layer` | **IOB** | Text | 10 | 92 | 100 | 28 | `Gothic 24 Bold` (scl font 1) | `#ffffff` (White) | Total active insulin on board. |
+| `right_iob_detail` | **IOB Detail** | Text | 10 | 120 | 115 | 27 | `Gothic 24` (scl font 3) | `#ffffff` (White) | Detailed bolus/basal split. |
+| `left_val_top` | **Basal Rate** | Text | 10 | 144 | 115 | 27 | `Gothic 24` (scl font 3) | `#ffffff` (White) | Active pump basal profile rate. |
+| `cob_layer` | **COB** | Text | 90 | 92 | 100 | 28 | `Gothic 24 Bold` (scl font 1) | `#ffffff` (White) | Active carbs on board. |
+| `date_layer` | **Date** | Text | 125 | 120 | 65 | 27 | `Gothic 24` (scl font 3) | `#ffffff` (White) | Calendar date. |
+| `graph_high_target` | **High Target** | Custom | 0 | 170 | 200 | 1 | N/A | `#555555` (Gray) | Programmatic 3px dashed line. |
+| `graph_low_target` | **Low Target** | Custom | 0 | 195 | 200 | 1 | N/A | `#aa0000` (Red) | Programmatic 3px dashed line. |
 | `gpath_hour_hand` | **Hour Hand** | GPath | 100 | 114 | 32 | 45 | N/A | `#ffffff` (White) | 5px thick analog hour hand. |
 | `gpath_minute_hand` | **Minute Hand** | GPath | 100 | 114 | 20 | 85 | N/A | `#ffffff` (White) | 3px thick analog minute hand. |
 

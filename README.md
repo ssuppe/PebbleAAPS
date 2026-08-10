@@ -1,30 +1,50 @@
-# Pebble AAPS Watchface (Pebble Time 2 MVP)
+# Pebble AAPS Watchface (Pebble Time 2 v2)
 
-A lightweight, low-power, and robust Pebble C watchface designed specifically for the **Pebble Time 2** (Emery platform, 200x228 color display) that connects to **AndroidAPS (AAPS)** to show real-time glucose status.
+A lightweight, low-power, and robust Pebble C watchface designed for the **Pebble Time 2** (Emery platform, 200x228 color display) and compatible with other Pebble models via `pebble-scalable`. It connects to **AndroidAPS (AAPS)** to show real-time glucose status, active pump treatments, and a glucose history curve.
 
 ---
 
 ## Features
 
-- **Pebble Time 2 Optimization**: Layout, typography, and resources tailored specifically for the 200x228 pixel 64-color screen.
-- **Large Readability**: Uses high-visibility `LECO_36` and `LECO_42` fonts for time and glucose values.
-- **Dynamic Asset Loading**: Dynamically loads 48x48 color trend icons as needed. This prevents heap fragmentation and keeps the RAM footprint under 2.3KB.
-- **TDD (Test-Driven Development) Architecture**: Decouples AAPS state tracking and age formatting logic from the Pebble SDK. This enables host-machine compilation (`gcc`) and automated unit testing without requiring an active emulator.
-- **Data Freshness Cues**: Updates reading ages every minute using the Pebble Tick Service. Turns age text **Red** (e.g., `15m ago`) when readings exceed 15 minutes old to warn you of stale data.
-- **Out-of-Bounds Protection**: Safely boundary guards AAPS enum trend array indexes, falling back to a neutral gray `?` icon if invalid inputs are received instead of crashing the watchface.
+- **Responsive Scaling (`pebble-scalable`)**: Fully responsive layout designed using relative coordinates that auto-scale gracefully to Emery (200x228), classic (144x168), and circular (180x180) screens.
+- **Stateful Persistence**: Automatically loads the last known state from Pebble persistent storage on boot and saves state updates on every AppMessage receipt, preventing data loss when switching apps.
+- **Glanceable Dashboard Layout**:
+  - **Top Row**: Blood Glucose Rate of Change (Delta) and data sync Age.
+  - **Middle Row**: Large high-legibility Blood Glucose reading and a dynamic color-coded Trend Arrow.
+  - **Status Columns**: Left column displays active insulin metrics (IOB, Detailed Split, Basal Rate); right column displays Carbs on Board (COB) and Date.
+  - **Glucose History Graph**: 36-point history graph showing low (red) and high (yellow) dashed target thresholds (defaulting to 70/180 mg/dL if targets are not set). Supports automatic "shift-left" slide animation as data ages on sync disconnection.
+- **Analog-Digital Hybrid Clock**: Features tick marks around the screen edge and sweeping hour/minute hands overlaid cleanly on top of the digital AAPS dashboard.
+- **Host-Runnable TDD Architecture**: Business logic is completely decoupled from the Pebble SDK, enabling unit testing (`gcc`) on the host machine without requiring the emulator.
+- **Minimal RAM Footprint**: Optimized to minimize heap fragmentation by using programmatic line drawings for ticks and target bounds instead of loading GBitmap resources.
 
 ---
 
 ## Screen Layout
 
-```
-+-----------------------------------+
-|             10:42 AM              |  <- System Time (LECO font)
-|                                   |
-|       120     [Color Arrow]       |  <- Blood Glucose & Trend Arrow (48x48)
-|                                   |
-|              3m ago               |  <- Age of reading (Red if >= 15m)
-+-----------------------------------+
+```text
++-------------------------------------------------------------+
+| [12:00 Tick]                                                |
+| [Delta] (+3|+5)                                  [Age] (3') |
+|                                                             |
+|                   [Glucose]      [Trend]                    |
+|                     6.2            →                        |
+|                                                             |
+| [9:00 Tick]           (Analog Hands)           [3:00 Tick]  |
+|                                                             |
+|     INSULIN COLUMN (LEFT)          CARBS & DATE (RIGHT)     |
+|       [IOB]                          [COB]                  |
+|       0.32 U                         0g                     |
+|       [IOB Detail]                   [Date]                 |
+|       (0.02|0.31)                    9 Aug                  |
+|       [Basal Rate]                                          |
+|       0.90                                                  |
+|                                                             |
+| ------------[High Target: 170px (Dashed Gray)]------------- |
+| ....................[Glucose dots (4x4)].................... |
+| ------------[Low Target:  195px (Dashed Red)]-------------- |
+|                                                             |
+|                      [6:00 Tick]                            |
++-------------------------------------------------------------+
 ```
 
 ---
@@ -32,7 +52,7 @@ A lightweight, low-power, and robust Pebble C watchface designed specifically fo
 ## File Structure
 
 ```
-├── package.json          # App metadata, UUID settings, keys mapping
+├── package.json          # App metadata, UUID settings, keys mapping, pebble-scalable
 ├── wscript               # Pebble SDK build configuration rules
 ├── README.md             # This document
 ├── TASKS.md              # Roadmap and verification checklist
@@ -40,7 +60,16 @@ A lightweight, low-power, and robust Pebble C watchface designed specifically fo
 │   └── c/
 │       ├── logic.h       # Decoupled state struct & logic declarations
 │       ├── logic.c       # Logic implementation (C-only, no Pebble SDK dependencies)
-│       └── pebble_watchface.c # Main Pebble UI, Tick, and AppMessage shell
+│       ├── state_store.h # Stateful persistence interface
+│       ├── state_store.c # Stateful persistence implementation (Pebble SDK only)
+│       └── pebble_watchface.c # Main Pebble UI, Tick, GPaths, drawing, and AppMessage shell
+├── docs/
+│   ├── design/
+│   │   ├── PebbleAAPS.pfs
+│   │   └── pebble_aaps_design_spec.md # Layout coordinates & design rationale
+│   └── eng/
+│       ├── plan.md       # Watchface engineering design & implementation plan
+│       └── androidaps_pebble_protocol.md # Companion app integration design
 ├── tests/
 │   └── test_logic.c      # Host unit test suite runner
 └── resources/
@@ -83,17 +112,22 @@ If working over SSH or headless:
    pebble screenshot tmp/screenshots/test.png
    ```
 4. **Send mock data updates**:
-   - *Normal update*:
+   - *Full status update (BG=120, Trend=Flat, IOB=0.32U, COB=0g, Basal=0.90, Details=(0.02|0.31), Delta=+3, AvgDelta=+5)*:
      ```bash
-     pebble send-app-message --int 0=115 1=5 4=$(date +%s)
+     pebble send-app-message --int 0=120 1=5 4=$(date +%s) --string 2="0.32 U" 3="0g" 5="0.90" 6="(0.02|0.31)" 7="+3" 8="+5"
      ```
-   - *Stale data update*:
+   - *Stale data update (last updated 20 minutes ago)*:
      ```bash
-     pebble send-app-message --int 0=130 1=3 4=$(( $(date +%s) - 1200 ))
+     pebble send-app-message --int 0=130 1=3 4=$(( $(date +%s) - 1200 )) --string 2="0.0 U" 3="0g" 5="0.90" 6="(0|0)" 7="-2" 8="-1"
      ```
    - *Out-of-bounds boundary fallback*:
      ```bash
      pebble send-app-message --int 0=95 1=15 4=$(date +%s)
+     ```
+   - *History Graph Injection (36-byte array, each byte = BG/2)*:
+     ```bash
+     # Send history array using hex string representation:
+     pebble send-app-message --bytes 9=3c3c3c3c3d3d3e3e3f3f40404141424243434444454546464747484849494a4a4b4b4c4c
      ```
 
 ---
