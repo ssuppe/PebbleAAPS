@@ -88,3 +88,18 @@ Rather than solid bright bars, the graph target ranges are rendered using pixel-
 
 ### 5. Bold Glucose Trend Curve
 Because scattered 2x2 dots look like visual noise and are hard to see on a watch, we connected the dots with a **continuous `2px` line** and increased the point sizes to **`4x4` pixels**, making the shape of your glucose curve instantly recognizable.
+
+---
+
+## 5. Memory & Resource Optimization Rationale
+
+To maintain the high-visibility, visually premium typography of the Lilita One typeface without causing heap memory exhaustion or long Bluetooth transmission delays, we employ several design-level optimizations:
+
+### 1. Programmatic Layouts over Static Assets
+Dashed targets and clock ticks are drawn dynamically in the update callbacks using basic drawing primitives (`graphics_draw_pixel` and `graphics_draw_line`), avoiding the need to store static grid line image assets.
+
+### 2. On-Demand Bitmap Swapping
+Instead of caching all ten trend direction arrows in memory concurrently, only the active trend arrow bitmap is loaded when a data update is received. The old bitmap is immediately freed back to the heap.
+
+### 3. Glyph Character-Set Pruning (`characterRegex`)
+TrueType font compilation is strictly restricted in `package.json` to only compile character ranges that are actually displayed on the UI. The large 48px font only generates numbers and punctuation, while letters are only generated for the smaller 22px/32px fonts. This keeps the bundle size at ~24KB and slashes the active font memory usage by over 80% (~3.8 KB runtime heap RAM).

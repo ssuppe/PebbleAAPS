@@ -49,16 +49,7 @@
           "file": "images/watchface_icon.png",
           "menuIcon": true
         },
-        {
-          "type": "png",
-          "name": "HIGH_TARGET_DASHED",
-          "file": "images/high_target_dashed.png"
-        },
-        {
-          "type": "png",
-          "name": "LOW_TARGET_DASHED",
-          "file": "images/low_target_dashed.png"
-        },
+
         {
           "type": "png",
           "name": "ARROW_NONE",
@@ -112,17 +103,20 @@
         {
           "type": "font",
           "name": "FONT_LILITA_22",
-          "file": "fonts/LilitaOne-Regular.ttf"
+          "file": "fonts/LilitaOne-Regular.ttf",
+          "characterRegex": "[0-9\\.\\+\\-\\(\\)\\|>\\'? a-zA-Z]"
         },
         {
           "type": "font",
           "name": "FONT_LILITA_32",
-          "file": "fonts/LilitaOne-Regular.ttf"
+          "file": "fonts/LilitaOne-Regular.ttf",
+          "characterRegex": "[0-9\\. Ug]"
         },
         {
           "type": "font",
           "name": "FONT_LILITA_48",
-          "file": "fonts/LilitaOne-Regular.ttf"
+          "file": "fonts/LilitaOne-Regular.ttf",
+          "characterRegex": "[0-9\\.\\-]"
         }
       ]
     }

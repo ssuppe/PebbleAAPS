@@ -1,8 +1,23 @@
 # Ignore build generated files
 build
-
-# Ignore waf lock file
 .lock-waf*
 
 # Ignore agent configurations
 .agents/
+
+# Node dependencies
+node_modules/
+
+# Logs
+*.log
+
+# Built binaries & snapshots
+*.pbw
+
+# Local backups & scratch
+backups/
+tmp/
+
+# UI Previews & Screenshots
+lightmode_preview*.png
+screenshot/
