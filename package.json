@@ -108,6 +108,21 @@
           "type": "png",
           "name": "ARROW_TRIPLE_DOWN",
           "file": "images/arrow_triple_down.png"
+        },
+        {
+          "type": "font",
+          "name": "FONT_LILITA_22",
+          "file": "fonts/LilitaOne-Regular.ttf"
+        },
+        {
+          "type": "font",
+          "name": "FONT_LILITA_32",
+          "file": "fonts/LilitaOne-Regular.ttf"
+        },
+        {
+          "type": "font",
+          "name": "FONT_LILITA_48",
+          "file": "fonts/LilitaOne-Regular.ttf"
         }
       ]
     }

@@ -34,14 +34,14 @@ A lightweight, low-power, and robust Pebble C watchface designed for the **Pebbl
 |     INSULIN COLUMN (LEFT)          CARBS & DATE (RIGHT)     |
 |       [IOB]                          [COB]                  |
 |       0.32 U                         0g                     |
-|       [IOB Detail]                   [Date]                 |
-|       (0.02|0.31)                    9 Aug                  |
-|       [Basal Rate]                                          |
-|       0.90                                                  |
+|       [Basal Rate]                   [Date]                 |
+|       0.90                           9 Aug                  |
+|       [Detailed IOB]                                        |
+|       (0.02|0.31)                                           |
 |                                                             |
-| ------------[High Target: 170px (Dashed Gray)]------------- |
+| ------------[High Target: 190px (Dashed Gray)]------------- |
 | ....................[Glucose dots (4x4)].................... |
-| ------------[Low Target:  195px (Dashed Red)]-------------- |
+| ------------[Low Target:  212px (Dashed Red)]-------------- |
 |                                                             |
 |                      [6:00 Tick]                            |
 +-------------------------------------------------------------+

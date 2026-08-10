@@ -93,23 +93,23 @@ void test_format_age_string() {
 
   // Test no data
   format_age_string(buf, sizeof(buf), 1700000000, 0, false);
-  assert(strcmp(buf, "No Data") == 0);
+  assert(strcmp(buf, "?") == 0);
 
   // Test 0 seconds age
   format_age_string(buf, sizeof(buf), 1700000000, 1700000000, true);
-  assert(strcmp(buf, "0m ago") == 0);
+  assert(strcmp(buf, "0'") == 0);
 
   // Test watch time behind phone time (clock skew)
   format_age_string(buf, sizeof(buf), 1700000000, 1700000100, true);
-  assert(strcmp(buf, "0m ago") == 0);
+  assert(strcmp(buf, "0'") == 0);
 
   // Test normal minutes
   format_age_string(buf, sizeof(buf), 1700000300, 1700000000, true); // 300s = 5m
-  assert(strcmp(buf, "5m ago") == 0);
+  assert(strcmp(buf, "5'") == 0);
 
   // Test very large age
   format_age_string(buf, sizeof(buf), 1700060000, 1700000000, true); // 60000s = 1000m
-  assert(strcmp(buf, ">999m ago") == 0);
+  assert(strcmp(buf, ">999'") == 0);
   printf("test_format_age_string passed!\n");
 }
 

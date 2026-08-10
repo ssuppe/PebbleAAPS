@@ -33,19 +33,19 @@ void format_age_string(char *buffer, size_t buffer_size,
                        time_t current_time, time_t rx_time, bool has_data) {
   if (!buffer || buffer_size == 0) return;
   if (!has_data) {
-    snprintf(buffer, buffer_size, "No Data");
+    snprintf(buffer, buffer_size, "?");
     return;
   }
 
   int delta_seconds = (int)(current_time - rx_time);
   if (delta_seconds < 0) {
-    snprintf(buffer, buffer_size, "0m ago");
+    snprintf(buffer, buffer_size, "0'");
   } else {
     int minutes = delta_seconds / 60;
     if (minutes > 999) {
-      snprintf(buffer, buffer_size, ">999m ago");
+      snprintf(buffer, buffer_size, ">999'");
     } else {
-      snprintf(buffer, buffer_size, "%dm ago", minutes);
+      snprintf(buffer, buffer_size, "%d'", minutes);
     }
   }
 }

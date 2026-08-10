@@ -22,7 +22,6 @@ static AAPSState s_state;
 static Window     *s_main_window;
 
 // Phase 1
-static Layer      *s_background_layer;
 static Layer      *s_hands_layer;
 static GPath      *s_hour_path;
 static GPath      *s_minute_path;
@@ -42,6 +41,10 @@ static TextLayer  *s_date_layer;
 // Phase 3
 static Layer      *s_graph_layer;
 
+static GFont      s_font_lilita_22;
+static GFont      s_font_lilita_32;
+static GFont      s_font_lilita_48;
+
 // ──────────────────────────────────────────────────────────────
 // Design constants mapped to scalable values (t_perc = pixels * 1000 / dim)
 // Emery screen dimensions: W=200, H=228
@@ -50,8 +53,8 @@ static Layer      *s_graph_layer;
 #define CLOCK_CY_T 500  // 114 px -> 500
 
 // Graph
-#define GRAPH_Y_HIGH_T 746 // 170 px -> 746
-#define GRAPH_Y_LOW_T  855 // 195 px -> 855
+#define GRAPH_Y_HIGH_T 833 // 190 px
+#define GRAPH_Y_LOW_T  930 // 212 px
 #define GRAPH_X_START_T  50  // 10 px -> 50
 #define GRAPH_X_STEP_T   25  // 5 px -> 25
 
@@ -105,7 +108,7 @@ static void update_age_display() {
 
   ColorState cs = get_age_color_state(now, s_state.last_reading_time, s_state.has_data);
   text_layer_set_text_color(s_age_layer,
-                            cs == COLOR_STATE_STALE ? GColorRed : GColorWhite);
+                            cs == COLOR_STATE_STALE ? GColorBulgarianRose : GColorBlack);
 }
 
 static void update_trend_arrow() {
@@ -145,56 +148,6 @@ static void update_date_display(struct tm *tick_time) {
   text_layer_set_text(s_date_layer, date_buf);
 }
 
-// ══════════════════════════════════════════════════════════════
-// Phase 1 — Background layer: clock ticks
-// ══════════════════════════════════════════════════════════════
-
-static void background_layer_update_proc(Layer *layer, GContext *ctx) {
-  GRect bounds = layer_get_bounds(layer);
-
-  // ── Cardinal ticks (white, strokeWidth=2, drawn as lines) ──
-  graphics_context_set_stroke_color(ctx, GColorWhite);
-  graphics_context_set_stroke_width(ctx, 2);
-  
-  // 12 o'clock: from top center down 10px
-  graphics_draw_line(ctx, GPoint(scl_x(CLOCK_CX_T), 0), GPoint(scl_x(CLOCK_CX_T), scl_y(44)));
-  
-  // 6 o'clock: from bottom center up 10px
-  graphics_draw_line(ctx, GPoint(scl_x(CLOCK_CX_T), bounds.size.h - 1), GPoint(scl_x(CLOCK_CX_T), bounds.size.h - 1 - scl_y(44)));
-
-  // 3 o'clock: from right center left 10px
-  graphics_draw_line(ctx, GPoint(bounds.size.w - 1, scl_y(CLOCK_CY_T)), GPoint(bounds.size.w - 1 - scl_x(50), scl_y(CLOCK_CY_T)));
-
-  // 9 o'clock: from left center right 10px
-  graphics_draw_line(ctx, GPoint(0, scl_y(CLOCK_CY_T)), GPoint(scl_x(50), scl_y(CLOCK_CY_T)));
-
-  // ── Diagonal corner ticks (gray #888, strokeWidth=1, angled lines) ──
-  graphics_context_set_stroke_color(ctx, GColorDarkGray);
-  graphics_context_set_stroke_width(ctx, 1);
-
-  // PFS coords scaled using scalable utility
-  // 1 o'clock: (166,0) -> (-5,+9) -> scaled: x=830, y=0
-  graphics_draw_line(ctx, GPoint(scl_x(830), 0), GPoint(scl_x(805), scl_y(39)));
-  // 2 o'clock: (200,56) -> (-9,+5) -> scaled: x=1000, y=246
-  graphics_draw_line(ctx, GPoint(bounds.size.w - 1, scl_y(246)), GPoint(bounds.size.w - 1 - scl_x(45), scl_y(268)));
-  // 4 o'clock: (200,172) -> (-9,-5) -> scaled: x=1000, y=754
-  graphics_draw_line(ctx, GPoint(bounds.size.w - 1, scl_y(754)), GPoint(bounds.size.w - 1 - scl_x(45), scl_y(732)));
-  // 5 o'clock: (166,228) -> (-5,-9) -> scaled: x=830, y=1000
-  graphics_draw_line(ctx, GPoint(scl_x(830), bounds.size.h - 1), GPoint(scl_x(805), bounds.size.h - 1 - scl_y(39)));
-  // 7 o'clock: (34,228) -> (+5,-9) -> scaled: x=170, y=1000
-  graphics_draw_line(ctx, GPoint(scl_x(170), bounds.size.h - 1), GPoint(scl_x(195), bounds.size.h - 1 - scl_y(39)));
-  // 8 o'clock: (0,172) -> (+9,-5) -> scaled: x=0, y=754
-  graphics_draw_line(ctx, GPoint(0, scl_y(754)), GPoint(scl_x(45), scl_y(732)));
-  // 10 o'clock: (0,56) -> (+9,+5) -> scaled: x=0, y=246
-  graphics_draw_line(ctx, GPoint(0, scl_y(246)), GPoint(scl_x(45), scl_y(268)));
-  // 11 o'clock: (34,0) -> (+5,+9) -> scaled: x=170, y=0
-  graphics_draw_line(ctx, GPoint(scl_x(170), 0), GPoint(scl_x(195), scl_y(39)));
-}
-
-// ══════════════════════════════════════════════════════════════
-// Phase 1 — Hands layer (scalable paths)
-// ══════════════════════════════════════════════════════════════
-
 // Hands relative coordinates mapping to scalable units.
 // Using GPath to allow rotation around (0,0) before shifting to Center.
 static const GPathInfo HOUR_HAND_INFO = {
@@ -207,6 +160,44 @@ static const GPathInfo MINUTE_HAND_INFO = {
 };
 
 static void hands_layer_update_proc(Layer *layer, GContext *ctx) {
+  GRect bounds = layer_get_bounds(layer);
+
+  // ── Dial Ticks (drawn under the hands, but on top of the graph) ──
+  // Cardinal ticks (black, strokeWidth=2, drawn as lines)
+  graphics_context_set_stroke_color(ctx, GColorBlack);
+  graphics_context_set_stroke_width(ctx, 2);
+  
+  // 12 o'clock: from top center down 10px
+  graphics_draw_line(ctx, GPoint(scl_x(CLOCK_CX_T), 0), GPoint(scl_x(CLOCK_CX_T), scl_y(44)));
+  // 6 o'clock: from bottom center up 10px
+  graphics_draw_line(ctx, GPoint(scl_x(CLOCK_CX_T), bounds.size.h - 1), GPoint(scl_x(CLOCK_CX_T), bounds.size.h - 1 - scl_y(44)));
+  // 3 o'clock: from right center left 10px
+  graphics_draw_line(ctx, GPoint(bounds.size.w - 1, scl_y(CLOCK_CY_T)), GPoint(bounds.size.w - 1 - scl_x(50), scl_y(CLOCK_CY_T)));
+  // 9 o'clock: from left center right 10px
+  graphics_draw_line(ctx, GPoint(0, scl_y(CLOCK_CY_T)), GPoint(scl_x(50), scl_y(CLOCK_CY_T)));
+
+  // ── Diagonal corner ticks (gray #888, strokeWidth=1, angled lines) ──
+  graphics_context_set_stroke_color(ctx, GColorDarkGray);
+  graphics_context_set_stroke_width(ctx, 1);
+
+  // 1 o'clock: scaled: x=830, y=0
+  graphics_draw_line(ctx, GPoint(scl_x(830), 0), GPoint(scl_x(805), scl_y(39)));
+  // 2 o'clock: scaled: x=1000, y=246
+  graphics_draw_line(ctx, GPoint(bounds.size.w - 1, scl_y(246)), GPoint(bounds.size.w - 1 - scl_x(45), scl_y(268)));
+  // 4 o'clock: scaled: x=1000, y=754
+  graphics_draw_line(ctx, GPoint(bounds.size.w - 1, scl_y(754)), GPoint(bounds.size.w - 1 - scl_x(45), scl_y(732)));
+  // 5 o'clock: scaled: x=830, y=1000
+  graphics_draw_line(ctx, GPoint(scl_x(830), bounds.size.h - 1), GPoint(scl_x(805), bounds.size.h - 1 - scl_y(39)));
+  // 7 o'clock: scaled: x=170, y=1000
+  graphics_draw_line(ctx, GPoint(scl_x(170), bounds.size.h - 1), GPoint(scl_x(195), bounds.size.h - 1 - scl_y(39)));
+  // 8 o'clock: scaled: x=0, y=754
+  graphics_draw_line(ctx, GPoint(0, scl_y(754)), GPoint(scl_x(45), scl_y(732)));
+  // 10 o'clock: scaled: x=0, y=246
+  graphics_draw_line(ctx, GPoint(0, scl_y(246)), GPoint(scl_x(45), scl_y(268)));
+  // 11 o'clock: scaled: x=170, y=0
+  graphics_draw_line(ctx, GPoint(scl_x(170), 0), GPoint(scl_x(195), scl_y(39)));
+
+  // ── Hands Drawing ──
   time_t now      = time(NULL);
   struct tm *tick = localtime(&now);
 
@@ -215,7 +206,7 @@ static void hands_layer_update_proc(Layer *layer, GContext *ctx) {
   int32_t hour_angle = calculate_hour_angle(tick->tm_hour, tick->tm_min);
   int32_t min_angle  = calculate_minute_angle(tick->tm_min);
 
-  graphics_context_set_stroke_color(ctx, GColorWhite);
+  graphics_context_set_stroke_color(ctx, GColorCobaltBlue);
 
   // Minute hand
   gpath_rotate_to(s_minute_path, min_angle);
@@ -230,7 +221,7 @@ static void hands_layer_update_proc(Layer *layer, GContext *ctx) {
   gpath_draw_outline(ctx, s_hour_path);
 
   // Center dot
-  graphics_context_set_fill_color(ctx, GColorBlack);
+  graphics_context_set_fill_color(ctx, GColorCobaltBlue);
   graphics_fill_circle(ctx, center, 5); // Larger dot for thicker hands
   graphics_context_set_fill_color(ctx, GColorWhite);
   graphics_fill_circle(ctx, center, 2);
@@ -283,7 +274,7 @@ static void graph_layer_update_proc(Layer *layer, GContext *ctx) {
 
     GColor dot_color;
     if      (bg_val < low)  dot_color = GColorBulgarianRose;
-    else if (bg_val > high) dot_color = GColorLimerick;
+    else if (bg_val > high) dot_color = GColorOrange;
     else                    dot_color = GColorIslamicGreen;
 
     if (has_prev) {
@@ -411,74 +402,69 @@ static void main_window_load(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
   GRect  bounds       = layer_get_bounds(window_layer);
 
-  // Background
-  s_background_layer = layer_create(bounds);
-  layer_set_update_proc(s_background_layer, background_layer_update_proc);
-  layer_add_child(window_layer, s_background_layer);
-
-  // BG: x=60 y=35 w=80 h=40 -> 60*1000/200 = 300, 35*1000/228 = 154, 80*1000/200 = 400, 40*1000/228 = 175
-  s_bg_layer = text_layer_create(GRect(scl_x(300), scl_y(154), scl_x(400), scl_y(175)));
+  // BG: (30, 36, 100, 52) -> 30*1000/200 = 150, 36*1000/228 = 158, 100*1000/200 = 500, 52*1000/228 = 228
+  s_bg_layer = text_layer_create(GRect(scl_x(150), scl_y(158), scl_x(500), scl_y(228)));
   text_layer_set_background_color(s_bg_layer, GColorClear);
-  text_layer_set_text_color(s_bg_layer, GColorGreen);
+  text_layer_set_text_color(s_bg_layer, GColorIslamicGreen);
   text_layer_set_font(s_bg_layer, scl_get_font(2));
   text_layer_set_text_alignment(s_bg_layer, GTextAlignmentLeft);
   layer_add_child(window_layer, text_layer_get_layer(s_bg_layer));
 
-  // Arrow: x=142 y=45 w=20 h=20 -> 142*1000/200 = 710, 45*1000/228 = 197, 20*1000/200 = 100, 20*1000/228 = 88
-  s_arrow_layer = bitmap_layer_create(GRect(scl_x(710), scl_y(197), scl_x(100), scl_y(88)));
+  // Arrow: (132, 42, 36, 36) -> 132*1000/200 = 660, 42*1000/228 = 184, 36*1000/200 = 180, 36*1000/228 = 158
+  s_arrow_layer = bitmap_layer_create(GRect(scl_x(660), scl_y(184), scl_x(180), scl_y(158)));
   bitmap_layer_set_background_color(s_arrow_layer, GColorClear);
   bitmap_layer_set_compositing_mode(s_arrow_layer, GCompOpSet);
   layer_add_child(window_layer, bitmap_layer_get_layer(s_arrow_layer));
 
-  // Delta: x=10 y=10 w=90 h=27 -> 10*1000/200 = 50, 10*1000/228 = 44, 90*1000/200 = 450, 27*1000/228 = 118
-  s_delta_layer = text_layer_create(GRect(scl_x(50), scl_y(44), scl_x(450), scl_y(118)));
+  // Delta: x=10 y=10 w=125 h=27 -> 10*1000/200 = 50, 10*1000/228 = 44, 125*1000/200 = 625, 27*1000/228 = 118
+  s_delta_layer = text_layer_create(GRect(scl_x(50), scl_y(44), scl_x(625), scl_y(118)));
   text_layer_set_background_color(s_delta_layer, GColorClear);
-  text_layer_set_text_color(s_delta_layer, GColorWhite);
+  text_layer_set_text_color(s_delta_layer, GColorBlack);
   text_layer_set_font(s_delta_layer, scl_get_font(4)); // Bold Gothic 18 (index 4)
   layer_add_child(window_layer, text_layer_get_layer(s_delta_layer));
 
-  // Age: x=135 y=10 w=55 h=27 -> 135*1000/200 = 675, 10*1000/228 = 44, 55*1000/200 = 275, 27*1000/228 = 118
-  s_age_layer = text_layer_create(GRect(scl_x(675), scl_y(44), scl_x(275), scl_y(118)));
+  // Age: x=130 y=10 w=60 h=27 -> 130*1000/200 = 650, 10*1000/228 = 44, 60*1000/200 = 300, 27*1000/228 = 118
+  s_age_layer = text_layer_create(GRect(scl_x(650), scl_y(44), scl_x(300), scl_y(118)));
   text_layer_set_background_color(s_age_layer, GColorClear);
-  text_layer_set_text_color(s_age_layer, GColorWhite);
+  text_layer_set_text_color(s_age_layer, GColorBlack);
   text_layer_set_font(s_age_layer, scl_get_font(4)); // Bold Gothic 18 (index 4)
   text_layer_set_text_alignment(s_age_layer, GTextAlignmentRight);
   layer_add_child(window_layer, text_layer_get_layer(s_age_layer));
 
-  // IOB: x=10 y=92 w=100 h=28 -> 10*1000/200 = 50, 92*1000/228 = 404, 100*1000/200 = 500, 28*1000/228 = 123
-  s_iob_layer = text_layer_create(GRect(scl_x(50), scl_y(404), scl_x(500), scl_y(123)));
+  // IOB: (5, 88, 115, 40) -> 5*1000/200 = 25, 88*1000/228 = 386, 115*1000/200 = 575, 40*1000/228 = 175
+  s_iob_layer = text_layer_create(GRect(scl_x(25), scl_y(386), scl_x(575), scl_y(175)));
   text_layer_set_background_color(s_iob_layer, GColorClear);
-  text_layer_set_text_color(s_iob_layer, GColorWhite);
+  text_layer_set_text_color(s_iob_layer, GColorBlack);
   text_layer_set_font(s_iob_layer, scl_get_font(1));
   layer_add_child(window_layer, text_layer_get_layer(s_iob_layer));
 
-  // IOB Detail: x=10 y=120 w=115 h=27 -> 10*1000/200 = 50, 120*1000/228 = 526, 115*1000/200 = 575, 27*1000/228 = 118
-  s_iob_detail_layer = text_layer_create(GRect(scl_x(50), scl_y(526), scl_x(575), scl_y(118)));
+  // IOB Detail: (5, 160, 190, 30) -> 5*1000/200 = 25, 160*1000/228 = 702, 190*1000/200 = 950, 30*1000/228 = 132
+  s_iob_detail_layer = text_layer_create(GRect(scl_x(25), scl_y(702), scl_x(950), scl_y(132)));
   text_layer_set_background_color(s_iob_detail_layer, GColorClear);
-  text_layer_set_text_color(s_iob_detail_layer, GColorWhite);
-  text_layer_set_font(s_iob_detail_layer, scl_get_font(3)); // Larger font (index 3)
+  text_layer_set_text_color(s_iob_detail_layer, GColorDarkGray);
+  text_layer_set_font(s_iob_detail_layer, scl_get_font(3)); // Bold Lilita 22
   layer_add_child(window_layer, text_layer_get_layer(s_iob_detail_layer));
 
-  // Basal: x=10 y=144 w=115 h=27 -> 10*1000/200 = 50, 144*1000/228 = 632, 115*1000/200 = 575, 27*1000/228 = 118
-  s_basal_layer = text_layer_create(GRect(scl_x(50), scl_y(632), scl_x(575), scl_y(118)));
+  // Basal: (5, 128, 115, 32) -> 5*1000/200 = 25, 128*1000/228 = 561, 115*1000/200 = 575, 32*1000/228 = 140
+  s_basal_layer = text_layer_create(GRect(scl_x(25), scl_y(561), scl_x(575), scl_y(140)));
   text_layer_set_background_color(s_basal_layer, GColorClear);
-  text_layer_set_text_color(s_basal_layer, GColorWhite);
-  text_layer_set_font(s_basal_layer, scl_get_font(3)); // Larger font (index 3)
+  text_layer_set_text_color(s_basal_layer, GColorDarkGray);
+  text_layer_set_font(s_basal_layer, scl_get_font(3)); // Bold Lilita 22
   layer_add_child(window_layer, text_layer_get_layer(s_basal_layer));
 
-  // COB: x=90 y=92 w=100 h=28 -> 90*1000/200 = 450, 92*1000/228 = 404, 100*1000/200 = 500, 28*1000/228 = 123
-  s_cob_layer = text_layer_create(GRect(scl_x(450), scl_y(404), scl_x(500), scl_y(123)));
+  // COB: (125, 88, 70, 40) -> 125*1000/200 = 625, 88*1000/228 = 386, 70*1000/200 = 350, 40*1000/228 = 175
+  s_cob_layer = text_layer_create(GRect(scl_x(625), scl_y(386), scl_x(350), scl_y(175)));
   text_layer_set_background_color(s_cob_layer, GColorClear);
-  text_layer_set_text_color(s_cob_layer, GColorWhite);
+  text_layer_set_text_color(s_cob_layer, GColorBlack);
   text_layer_set_font(s_cob_layer, scl_get_font(1));
   text_layer_set_text_alignment(s_cob_layer, GTextAlignmentRight);
   layer_add_child(window_layer, text_layer_get_layer(s_cob_layer));
 
-  // Date: x=125 y=120 w=65 h=27 -> 125*1000/200 = 625, 120*1000/228 = 526, 65*1000/200 = 325, 27*1000/228 = 118
-  s_date_layer = text_layer_create(GRect(scl_x(625), scl_y(526), scl_x(325), scl_y(118)));
+  // Date: (125, 128, 70, 32) -> 125*1000/200 = 625, 128*1000/228 = 561, 70*1000/200 = 350, 32*1000/228 = 140
+  s_date_layer = text_layer_create(GRect(scl_x(625), scl_y(561), scl_x(350), scl_y(140)));
   text_layer_set_background_color(s_date_layer, GColorClear);
-  text_layer_set_text_color(s_date_layer, GColorWhite);
-  text_layer_set_font(s_date_layer, scl_get_font(3)); // Larger font (index 3)
+  text_layer_set_text_color(s_date_layer, GColorDarkGray);
+  text_layer_set_font(s_date_layer, scl_get_font(3)); // Bold Lilita 22
   text_layer_set_text_alignment(s_date_layer, GTextAlignmentRight);
   layer_add_child(window_layer, text_layer_get_layer(s_date_layer));
 
@@ -504,7 +490,6 @@ static void main_window_load(Window *window) {
 }
 
 static void main_window_unload(Window *window) {
-  layer_destroy(s_background_layer);
   layer_destroy(s_hands_layer);
   gpath_destroy(s_hour_path);
   gpath_destroy(s_minute_path);
@@ -529,17 +514,17 @@ static void main_window_unload(Window *window) {
 // ══════════════════════════════════════════════════════════════
 
 static void init() {
-  // Font styling configuration
-  scl_set_fonts(0, {.o = fonts_get_system_font(FONT_KEY_GOTHIC_14),
-                    .e = fonts_get_system_font(FONT_KEY_GOTHIC_18)});
-  scl_set_fonts(1, {.o = fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD),
-                    .e = fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD)});
-  scl_set_fonts(2, {.o = fonts_get_system_font(FONT_KEY_LECO_36_BOLD_NUMBERS),
-                    .e = fonts_get_system_font(FONT_KEY_LECO_38_BOLD_NUMBERS)});
-  scl_set_fonts(3, {.o = fonts_get_system_font(FONT_KEY_GOTHIC_14_BOLD),
-                    .e = fonts_get_system_font(FONT_KEY_GOTHIC_24)});
-  scl_set_fonts(4, {.o = fonts_get_system_font(FONT_KEY_GOTHIC_14_BOLD),
-                    .e = fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD)});
+  // Load custom chunky fonts
+  s_font_lilita_22 = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_LILITA_22));
+  s_font_lilita_32 = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_LILITA_32));
+  s_font_lilita_48 = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_LILITA_48));
+
+  // Font styling configuration using Lilita One
+  scl_set_fonts(0, {.o = s_font_lilita_22, .e = s_font_lilita_22});
+  scl_set_fonts(1, {.o = s_font_lilita_32, .e = s_font_lilita_32});
+  scl_set_fonts(2, {.o = s_font_lilita_48, .e = s_font_lilita_48});
+  scl_set_fonts(3, {.o = s_font_lilita_22, .e = s_font_lilita_22});
+  scl_set_fonts(4, {.o = s_font_lilita_22, .e = s_font_lilita_22});
 
   init_aaps_state(&s_state);
   state_store_load(&s_state);
@@ -548,7 +533,7 @@ static void init() {
   s_minute_path = gpath_create(&MINUTE_HAND_INFO);
 
   s_main_window = window_create();
-  window_set_background_color(s_main_window, GColorBlack);
+  window_set_background_color(s_main_window, GColorWhite);
   window_set_window_handlers(s_main_window, (WindowHandlers){
     .load   = main_window_load,
     .unload = main_window_unload
@@ -565,6 +550,11 @@ static void deinit() {
   tick_timer_service_unsubscribe();
   app_message_deregister_callbacks();
   window_destroy(s_main_window);
+
+  // Unload custom fonts to release heap memory
+  fonts_unload_custom_font(s_font_lilita_22);
+  fonts_unload_custom_font(s_font_lilita_32);
+  fonts_unload_custom_font(s_font_lilita_48);
 }
 
 int main(void) {
