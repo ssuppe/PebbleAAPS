@@ -15,6 +15,9 @@
     "sdkVersion": "3",
     "enableMultiJS": false,
     "targetPlatforms": [
+      "basalt",
+      "chalk",
+      "diorite",
       "emery"
     ],
     "screenshots": {

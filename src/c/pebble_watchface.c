@@ -167,7 +167,7 @@ static void update_trend_arrow() {
 
     GColor *palette = gbitmap_get_palette(s_arrow_bitmap);
     if (palette) {
-      palette[0] = target_color;
+      palette[1] = target_color;
     }
     bitmap_layer_set_bitmap(s_arrow_layer, s_arrow_bitmap);
   }

@@ -143,8 +143,8 @@ Screen: Emery = 200×228. Original rectangular = 144×168.
 
 | Layer | scl_x | scl_y | scl_w | scl_h | Font (Emery) | Font (Original) |
 |---|---|---|---|---|---|---|
-| **BG** | 300 | 154 | 400 | 175 | `LECO_38_BOLD_NUMBERS` | `LECO_36_BOLD_NUMBERS` |
-| **Arrow** | 710 | 197 | 100 | 88 | — | — |
+| **BG** | 25 | 158 | 550 | 228 | `FONT_LILITA_48` | `FONT_LILITA_48` |
+| **Arrow** | Dynamic | 184 | 180 | 158 | — | — |
 | **Delta** | 50 | 44 | 375 | 105 | `GOTHIC_18` | `GOTHIC_14` |
 | **Age** | 725 | 44 | 225 | 105 | `GOTHIC_18` | `GOTHIC_14` |
 | **IOB** | 50 | 404 | 400 | 123 | `GOTHIC_24_BOLD` | `GOTHIC_18_BOLD` |

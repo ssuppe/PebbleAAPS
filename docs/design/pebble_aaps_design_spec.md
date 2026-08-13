@@ -52,8 +52,8 @@ The core objective is to create a **highly legible, glanceable, and trustworthy 
 
 | Layer ID | Name | Type | X | Y | Width | Height | Font / Size | Color | Description |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `bg_layer` | **BG** | Text | 30 | 36 | 100 | 52 | `Lilita One 48` (scl font 2) | `#00aa00` (Islamic Green) | Blood glucose reading value. |
-| `arrow_layer` | **Arrow** | Bitmap | 132 | 42 | 36 | 36 | N/A | Dynamic (Trend-based) | Dilated and upscaled 36x36px trend arrow. |
+| `bg_layer` | **BG** | Text | 5 | 36 | 110 | 52 | `Lilita One 48` (scl font 2) | `#00aa00` (Islamic Green) | Blood glucose reading value. Left-aligned at X=5px (scl_x(25)) matching the info column below it. |
+| `arrow_layer` | **Arrow** | Bitmap | Dynamic | 42 | 36 | 36 | N/A | Dynamic (Trend-based) | Dilated 36x36px trend arrow, dynamically positioned after the BG text with a 5px gap. |
 | `delta_layer` | **Delta** | Text | 10 | 10 | 125 | 27 | `Gothic 18 Bold` (scl font 4) | `#000000` (Black) | Rate of change trend `(+3\|+5)`. |
 | `age_layer` | **Age** | Text | 130 | 10 | 60 | 27 | `Gothic 18 Bold` (scl font 4) | `#000000` (Black) | Reading sync age `(3')`. |
 | `iob_layer` | **IOB** | Text | 5 | 88 | 115 | 40 | `Lilita One 32` (scl font 1) | `#000000` (Black) | Total active insulin on board. |
