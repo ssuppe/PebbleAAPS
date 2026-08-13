@@ -23,6 +23,17 @@ typedef enum {
 } ColorState;
 
 // ──────────────────────────────────────────────────────────────
+// BG value color state — drives arrow and BG text color
+// NO_DATA covers both "no reading" and "stale reading" (>= 15 min)
+// ──────────────────────────────────────────────────────────────
+typedef enum {
+  BG_COLOR_IN_RANGE, // bg within [low_target, high_target]
+  BG_COLOR_HIGH,     // bg above high_target
+  BG_COLOR_LOW,      // bg below low_target
+  BG_COLOR_NO_DATA   // no reading, stale reading, or rx_time == 0
+} BgColorState;
+
+// ──────────────────────────────────────────────────────────────
 // AAPSState — canonical data model (persisted to flash as-is)
 // ──────────────────────────────────────────────────────────────
 typedef struct {
@@ -61,6 +72,7 @@ void format_age_string(char *buffer, size_t buffer_size,
                        time_t current_time, time_t rx_time, bool has_data);
 void format_bg_string(char *buffer, size_t buffer_size, int32_t bg_value, bool is_mmol, bool has_data);
 ColorState get_age_color_state(time_t current_time, time_t rx_time, bool has_data);
+BgColorState get_bg_color_state(const AAPSState *state, time_t now);
 
 // ──────────────────────────────────────────────────────────────
 // Phase 2 — Pump / loop status strings

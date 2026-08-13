@@ -298,6 +298,120 @@ void test_clock_angles() {
 }
 
 // ══════════════════════════════════════════════════════════════
+// Phase 4 — BgColorState tests (get_bg_color_state)
+// ══════════════════════════════════════════════════════════════
+
+// Helper: build a minimal AAPSState for color state tests
+static AAPSState make_state(int32_t bg, int32_t low, int32_t high,
+                             bool has_data, time_t rx_time) {
+  AAPSState s;
+  init_aaps_state(&s);
+  s.bg_value         = bg;
+  s.has_data         = has_data;
+  s.last_reading_time = rx_time;
+  s.low_target       = low;
+  s.high_target      = high;
+  return s;
+}
+
+void test_bg_color_state() {
+  // Anchored reference time — all "now" values are offsets from this.
+  const time_t BASE = 1700000000;
+  const time_t FRESH = BASE - 60;        // 1 minute old — definitely fresh
+  const time_t STALE_BOUNDARY = BASE - 900;  // exactly 15 minutes old — stale
+  const time_t JUST_FRESH = BASE - 899;  // 14m 59s — still fresh
+  const time_t VERY_STALE = BASE - 3600; // 1 hour old
+
+  AAPSState s;
+
+  // ── 1. No data at all ──
+  s = make_state(120, 70, 180, false, 0);
+  assert(get_bg_color_state(&s, BASE) == BG_COLOR_NO_DATA);
+
+  // ── 2. Has data but no reading time set (rx_time == 0) ──
+  // Should be treated as no/stale data.
+  s = make_state(120, 70, 180, true, 0);
+  assert(get_bg_color_state(&s, BASE) == BG_COLOR_NO_DATA);
+
+  // ── 3. Stale: exactly 15 minutes old ──
+  s = make_state(120, 70, 180, true, STALE_BOUNDARY);
+  assert(get_bg_color_state(&s, BASE) == BG_COLOR_NO_DATA);
+
+  // ── 4. Just under stale threshold: 14m 59s ──
+  s = make_state(120, 70, 180, true, JUST_FRESH);
+  assert(get_bg_color_state(&s, BASE) == BG_COLOR_IN_RANGE); // 120 is in [70,180]
+
+  // ── 5. Stale + out-of-range: stale dominates ──
+  s = make_state(250, 70, 180, true, VERY_STALE);
+  assert(get_bg_color_state(&s, BASE) == BG_COLOR_NO_DATA);
+
+  s = make_state(40, 70, 180, true, VERY_STALE);
+  assert(get_bg_color_state(&s, BASE) == BG_COLOR_NO_DATA);
+
+  // ── 6. Normal in-range readings ──
+  s = make_state(70,  70, 180, true, FRESH);  // exactly at low target
+  assert(get_bg_color_state(&s, BASE) == BG_COLOR_IN_RANGE);
+
+  s = make_state(180, 70, 180, true, FRESH);  // exactly at high target
+  assert(get_bg_color_state(&s, BASE) == BG_COLOR_IN_RANGE);
+
+  s = make_state(100, 70, 180, true, FRESH);  // midpoint
+  assert(get_bg_color_state(&s, BASE) == BG_COLOR_IN_RANGE);
+
+  // ── 7. Low boundary ──
+  s = make_state(69, 70, 180, true, FRESH);   // one below low target
+  assert(get_bg_color_state(&s, BASE) == BG_COLOR_LOW);
+
+  s = make_state(40, 70, 180, true, FRESH);   // very low
+  assert(get_bg_color_state(&s, BASE) == BG_COLOR_LOW);
+
+  s = make_state(1, 70, 180, true, FRESH);    // near-zero
+  assert(get_bg_color_state(&s, BASE) == BG_COLOR_LOW);
+
+  // ── 8. High boundary ──
+  s = make_state(181, 70, 180, true, FRESH);  // one above high target
+  assert(get_bg_color_state(&s, BASE) == BG_COLOR_HIGH);
+
+  s = make_state(400, 70, 180, true, FRESH);  // very high
+  assert(get_bg_color_state(&s, BASE) == BG_COLOR_HIGH);
+
+  // ── 9. Custom targets ──
+  s = make_state(79, 80, 140, true, FRESH);   // one below custom low
+  assert(get_bg_color_state(&s, BASE) == BG_COLOR_LOW);
+
+  s = make_state(80, 80, 140, true, FRESH);   // exactly at custom low
+  assert(get_bg_color_state(&s, BASE) == BG_COLOR_IN_RANGE);
+
+  s = make_state(140, 80, 140, true, FRESH);  // exactly at custom high
+  assert(get_bg_color_state(&s, BASE) == BG_COLOR_IN_RANGE);
+
+  s = make_state(141, 80, 140, true, FRESH);  // one above custom high
+  assert(get_bg_color_state(&s, BASE) == BG_COLOR_HIGH);
+
+  // ── 10. Default target fallback (low_target == 0, high_target == 0) ──
+  s = make_state(65, 0, 0, true, FRESH);   // below default low (70)
+  assert(get_bg_color_state(&s, BASE) == BG_COLOR_LOW);
+
+  s = make_state(70, 0, 0, true, FRESH);   // exactly default low
+  assert(get_bg_color_state(&s, BASE) == BG_COLOR_IN_RANGE);
+
+  s = make_state(185, 0, 0, true, FRESH);  // above default high (180)
+  assert(get_bg_color_state(&s, BASE) == BG_COLOR_HIGH);
+
+  s = make_state(180, 0, 0, true, FRESH);  // exactly default high
+  assert(get_bg_color_state(&s, BASE) == BG_COLOR_IN_RANGE);
+
+  // ── 11. Partial default fallback (only one target is 0) ──
+  s = make_state(65, 0, 140, true, FRESH);  // low_target 0 → default 70; bg 65 is low
+  assert(get_bg_color_state(&s, BASE) == BG_COLOR_LOW);
+
+  s = make_state(185, 80, 0, true, FRESH);  // high_target 0 → default 180; bg 185 is high
+  assert(get_bg_color_state(&s, BASE) == BG_COLOR_HIGH);
+
+  printf("test_bg_color_state passed!\n");
+}
+
+// ══════════════════════════════════════════════════════════════
 // Main
 // ══════════════════════════════════════════════════════════════
 
@@ -325,9 +439,12 @@ int main() {
   test_shift_history_left();
   test_calculate_graph_y();
   test_target_defaults();
-  
+
   // Analog Clock angles
   test_clock_angles();
+
+  // Phase 4 — BG color state
+  test_bg_color_state();
 
   printf("All host tests passed successfully!\n");
   return 0;

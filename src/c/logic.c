@@ -75,6 +75,29 @@ ColorState get_age_color_state(time_t current_time, time_t rx_time, bool has_dat
   return COLOR_STATE_NORMAL;
 }
 
+BgColorState get_bg_color_state(const AAPSState *state, time_t now) {
+  if (!state) return BG_COLOR_NO_DATA;
+
+  // No reading available, or rx_time was never set
+  if (!state->has_data || state->last_reading_time == 0) {
+    return BG_COLOR_NO_DATA;
+  }
+
+  // Stale: 15 minutes or older (mirrors get_age_color_state threshold)
+  int age_seconds = (int)(now - state->last_reading_time);
+  if (age_seconds >= 900) {
+    return BG_COLOR_NO_DATA;
+  }
+
+  // Resolve effective targets — fall back to compile-time defaults if unset
+  int32_t low  = (state->low_target  > 0) ? state->low_target  : DEFAULT_LOW_TARGET;
+  int32_t high = (state->high_target > 0) ? state->high_target : DEFAULT_HIGH_TARGET;
+
+  if (state->bg_value < low)  return BG_COLOR_LOW;
+  if (state->bg_value > high) return BG_COLOR_HIGH;
+  return BG_COLOR_IN_RANGE;
+}
+
 // ──────────────────────────────────────────────────────────────
 // Phase 2 — Pump / loop status strings
 // ──────────────────────────────────────────────────────────────
