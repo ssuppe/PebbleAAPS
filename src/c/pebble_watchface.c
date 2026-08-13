@@ -26,6 +26,7 @@ static Layer      *s_hands_layer;
 static GPath      *s_hour_path;
 static GPath      *s_minute_path;
 static TextLayer  *s_bg_layer;
+static Layer      *s_bg_strike_layer;
 static TextLayer  *s_delta_layer;
 static TextLayer  *s_age_layer;
 static BitmapLayer *s_arrow_layer;
@@ -74,6 +75,28 @@ static const uint32_t ARROW_RESOURCE_IDS[] = {
   RESOURCE_ID_ARROW_TRIPLE_DOWN       // 9
 };
 
+static GColor get_gcolor_for_bg_state(BgColorState bg_cs) {
+  switch (bg_cs) {
+    case BG_COLOR_LOW:      return GColorBulgarianRose;
+    case BG_COLOR_HIGH:     return GColorOrange;
+    case BG_COLOR_IN_RANGE: return GColorIslamicGreen;
+    case BG_COLOR_NO_DATA:
+    default:                return GColorDarkGray;
+  }
+}
+
+static void bg_strike_layer_update_proc(Layer *layer, GContext *ctx) {
+  time_t now = time(NULL);
+  BgColorState cs = get_bg_color_state(&s_state, now);
+  if (cs != BG_COLOR_NO_DATA) return;
+
+  GRect bounds = layer_get_bounds(layer);
+  int mid_y = bounds.size.h / 2;
+  graphics_context_set_stroke_color(ctx, GColorDarkGray);
+  graphics_context_set_stroke_width(ctx, 3);
+  graphics_draw_line(ctx, GPoint(0, mid_y), GPoint(bounds.size.w, mid_y));
+}
+
 // ══════════════════════════════════════════════════════════════
 // Phase 1 — Update display functions
 // ══════════════════════════════════════════════════════════════
@@ -82,6 +105,12 @@ static void update_bg_display() {
   static char bg_buffer[8];
   format_bg_string(bg_buffer, sizeof(bg_buffer), s_state.bg_value, s_state.is_mmol, s_state.has_data);
   text_layer_set_text(s_bg_layer, bg_buffer);
+
+  time_t now = time(NULL);
+  BgColorState bg_cs = get_bg_color_state(&s_state, now);
+  GColor bg_color = get_gcolor_for_bg_state(bg_cs);
+  text_layer_set_text_color(s_bg_layer, bg_color);
+  layer_mark_dirty(s_bg_strike_layer);
 
   // Dynamically position the arrow layer right after the BG text
   GSize size = text_layer_get_content_size(s_bg_layer);
@@ -132,6 +161,14 @@ static void update_trend_arrow() {
   }
   s_arrow_bitmap = gbitmap_create_with_resource(ARROW_RESOURCE_IDS[idx]);
   if (s_arrow_bitmap) {
+    time_t now = time(NULL);
+    BgColorState bg_cs = (idx == 0) ? BG_COLOR_NO_DATA : get_bg_color_state(&s_state, now);
+    GColor target_color = get_gcolor_for_bg_state(bg_cs);
+
+    GColor *palette = gbitmap_get_palette(s_arrow_bitmap);
+    if (palette) {
+      palette[0] = target_color;
+    }
     bitmap_layer_set_bitmap(s_arrow_layer, s_arrow_bitmap);
   }
   layer_mark_dirty(bitmap_layer_get_layer(s_arrow_layer));
@@ -420,6 +457,10 @@ static void main_window_load(Window *window) {
   text_layer_set_text_alignment(s_bg_layer, GTextAlignmentLeft);
   layer_add_child(window_layer, text_layer_get_layer(s_bg_layer));
 
+  s_bg_strike_layer = layer_create(GRect(scl_x(25), scl_y(158), scl_x(550), scl_y(228)));
+  layer_set_update_proc(s_bg_strike_layer, bg_strike_layer_update_proc);
+  layer_add_child(window_layer, s_bg_strike_layer);
+
   // Arrow: (30, 42, 36, 36) -> 30*1000/200 = 150, 42*1000/228 = 184, 36*1000/200 = 180, 36*1000/228 = 158
   // Initial frame; will be dynamically adjusted in update_bg_display()
   // Arrow: (30, 42, 36, 36) -> 30*1000/200 = 150, 42*1000/228 = 184, 36*1000/200 = 180, 36*1000/228 = 158
@@ -507,6 +548,7 @@ static void main_window_unload(Window *window) {
   gpath_destroy(s_hour_path);
   gpath_destroy(s_minute_path);
   text_layer_destroy(s_bg_layer);
+  layer_destroy(s_bg_strike_layer);
   text_layer_destroy(s_delta_layer);
   text_layer_destroy(s_age_layer);
   bitmap_layer_destroy(s_arrow_layer);
