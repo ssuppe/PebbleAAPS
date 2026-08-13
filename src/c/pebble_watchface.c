@@ -82,6 +82,16 @@ static void update_bg_display() {
   static char bg_buffer[8];
   format_bg_string(bg_buffer, sizeof(bg_buffer), s_state.bg_value, s_state.is_mmol, s_state.has_data);
   text_layer_set_text(s_bg_layer, bg_buffer);
+
+  // Dynamically position the arrow layer right after the BG text
+  GSize size = text_layer_get_content_size(s_bg_layer);
+  GRect bg_frame = layer_get_frame(text_layer_get_layer(s_bg_layer));
+  GRect arrow_frame = layer_get_frame(bitmap_layer_get_layer(s_arrow_layer));
+
+  // Set the Arrow's X to be right after the text size, with a small gap (e.g. 5px / 25 thousandths)
+  int gap = scl_x(25); // 5px gap
+  arrow_frame.origin.x = bg_frame.origin.x + size.w + gap;
+  layer_set_frame(bitmap_layer_get_layer(s_arrow_layer), arrow_frame);
 }
 
 static void update_delta_display() {
@@ -402,16 +412,19 @@ static void main_window_load(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
   GRect  bounds       = layer_get_bounds(window_layer);
 
-  // BG: (30, 36, 100, 52) -> 30*1000/200 = 150, 36*1000/228 = 158, 100*1000/200 = 500, 52*1000/228 = 228
-  s_bg_layer = text_layer_create(GRect(scl_x(150), scl_y(158), scl_x(500), scl_y(228)));
+  // BG: (5, 36, 110, 52) -> 5*1000/200 = 25, 36*1000/228 = 158, 110*1000/200 = 550, 52*1000/228 = 228
+  s_bg_layer = text_layer_create(GRect(scl_x(25), scl_y(158), scl_x(550), scl_y(228)));
   text_layer_set_background_color(s_bg_layer, GColorClear);
   text_layer_set_text_color(s_bg_layer, GColorIslamicGreen);
   text_layer_set_font(s_bg_layer, scl_get_font(2));
   text_layer_set_text_alignment(s_bg_layer, GTextAlignmentLeft);
   layer_add_child(window_layer, text_layer_get_layer(s_bg_layer));
 
-  // Arrow: (132, 42, 36, 36) -> 132*1000/200 = 660, 42*1000/228 = 184, 36*1000/200 = 180, 36*1000/228 = 158
-  s_arrow_layer = bitmap_layer_create(GRect(scl_x(660), scl_y(184), scl_x(180), scl_y(158)));
+  // Arrow: (30, 42, 36, 36) -> 30*1000/200 = 150, 42*1000/228 = 184, 36*1000/200 = 180, 36*1000/228 = 158
+  // Initial frame; will be dynamically adjusted in update_bg_display()
+  // Arrow: (30, 42, 36, 36) -> 30*1000/200 = 150, 42*1000/228 = 184, 36*1000/200 = 180, 36*1000/228 = 158
+  // Initial frame; will be dynamically adjusted in update_bg_display()
+  s_arrow_layer = bitmap_layer_create(GRect(scl_x(150), scl_y(184), scl_x(180), scl_y(158)));
   bitmap_layer_set_background_color(s_arrow_layer, GColorClear);
   bitmap_layer_set_compositing_mode(s_arrow_layer, GCompOpSet);
   layer_add_child(window_layer, bitmap_layer_get_layer(s_arrow_layer));
