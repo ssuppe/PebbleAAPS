@@ -123,3 +123,23 @@ This file outlines the step-by-step roadmap for building the AndroidAPS Pebble T
 
 - [x] **Phase 3 Visual Verification Gate**
   - Send 36-byte glucose history, take screenshot, verify dashed lines, curve, dot colors. ✅
+
+---
+
+### Phase 4: Arrow Icon Refresh & Dynamic BG Color & Strikethrough
+
+- [x] **Task 4.1 — Arrow Icon Asset Refresh**
+  - Created white-on-transparent 36×36 PNG arrow assets (`arrow_flat.png`, `arrow_single_up.png`, `arrow_single_down.png`, `arrow_forty_five_up.png`, `arrow_forty_five_down.png`) derived from clean source design.
+  - **Verification:** `pebble build` succeeds ✅
+
+- [x] **Task 4.2 — BgColorState & Host TDD Tests**
+  - Implemented `BgColorState` enum (`BG_COLOR_IN_RANGE`, `BG_COLOR_HIGH`, `BG_COLOR_LOW`, `BG_COLOR_NO_DATA`) and `get_bg_color_state()` in `logic.c`/`logic.h`.
+  - Added 28 unit tests in `tests/test_logic.c` covering stale readings, missing readings, target defaults, custom targets, boundary exact matches, and edge cases.
+  - **Verification:** Host tests pass cleanly (`./test_runner` → GREEN) ✅
+
+- [x] **Task 4.3 — UX Palette Swapping, BG Text Color & Strikethrough Layer**
+  - Applied runtime palette-swapping to `GBitmap` palette in `update_trend_arrow()` to tint white PNG arrows dynamically based on `BgColorState`.
+  - Bound BG text color to `BgColorState` (`GColorIslamicGreen`, `GColorOrange`, `GColorBulgarianRose`, or `GColorDarkGray`).
+  - Added `s_bg_strike_layer` to draw a 3px horizontal strikethrough line over the BG text whenever state is `BG_COLOR_NO_DATA`.
+  - **Verification:** `pebble build` succeeds ✅
+
