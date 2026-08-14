@@ -412,6 +412,60 @@ void test_bg_color_state() {
 }
 
 // ══════════════════════════════════════════════════════════════
+// Additional Defensive Edge Case Tests
+// ══════════════════════════════════════════════════════════════
+
+void test_calculate_graph_y_invalid_targets() {
+  // Guard division by zero when high_target <= low_target
+  int y = calculate_graph_y(120, 180, 180, 170, 195);
+  assert(y == 195); // returns y_bottom safely
+  y = calculate_graph_y(120, 200, 180, 170, 195);
+  assert(y == 195);
+  printf("test_calculate_graph_y_invalid_targets passed!\n");
+}
+
+void test_shift_history_overflow() {
+  AAPSState state = {0};
+  for (int i = 0; i < 36; i++) state.bg_history[i] = 50 + i;
+  state.history_count = 36;
+
+  // Shift by >= 36 should completely clear the buffer
+  shift_history_left(&state, 40);
+  assert(state.history_count == 0);
+  for (int i = 0; i < 36; i++) {
+    assert(state.bg_history[i] == 0);
+  }
+  printf("test_shift_history_overflow passed!\n");
+}
+
+void test_update_status_partial_null() {
+  AAPSState state = {0};
+  init_aaps_state(&state);
+  update_aaps_status(&state, "1.5U", "15g", "1.0", "(0.1|1.4)");
+
+  // Partial update: passing NULL for iob and cob should preserve existing strings
+  update_aaps_status(&state, NULL, NULL, "1.2", NULL);
+  assert(strcmp(state.iob, "1.5U") == 0);
+  assert(strcmp(state.cob, "15g") == 0);
+  assert(strcmp(state.basal, "1.2") == 0);
+  assert(strcmp(state.iob_detail, "(0.1|1.4)") == 0);
+  printf("test_update_status_partial_null passed!\n");
+}
+
+void test_null_buffer_guards() {
+  // Passing NULL pointers or size=0 to formatting functions should not crash
+  format_age_string(NULL, 0, 1700000000, 1700000000, true);
+  format_bg_string(NULL, 0, 120, false, true);
+  init_aaps_state(NULL);
+  assert(update_aaps_state(NULL, 120, 5, 1700000000) == false);
+  update_aaps_status(NULL, "1U", "0g", "1.0", NULL);
+  add_to_history(NULL, 120);
+  shift_history_left(NULL, 5);
+  assert(get_bg_color_state(NULL, 1700000000) == BG_COLOR_NO_DATA);
+  printf("test_null_buffer_guards passed!\n");
+}
+
+// ══════════════════════════════════════════════════════════════
 // Main
 // ══════════════════════════════════════════════════════════════
 
@@ -445,6 +499,12 @@ int main() {
 
   // Phase 4 — BG color state
   test_bg_color_state();
+
+  // Edge cases & defensive guards
+  test_calculate_graph_y_invalid_targets();
+  test_shift_history_overflow();
+  test_update_status_partial_null();
+  test_null_buffer_guards();
 
   printf("All host tests passed successfully!\n");
   return 0;
