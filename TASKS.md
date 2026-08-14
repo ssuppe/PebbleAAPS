@@ -143,3 +143,8 @@ This file outlines the step-by-step roadmap for building the AndroidAPS Pebble T
   - Added `s_bg_strike_layer` to draw a 3px horizontal strikethrough line over the BG text whenever state is `BG_COLOR_NO_DATA`.
   - **Verification:** `pebble build` succeeds ✅
 
+- [x] **Task 4.4 — Double Arrow Assets & Defensive Test Harness Expansion**
+  - Processed `/home/clark/dev/tmp/doubleuporiginal.png` into crisp 1-bit solid white `arrow_double_up.png` and `arrow_double_down.png` 36×36 assets.
+  - Expanded host test harness with 4 additional defensive edge case test suites (`test_calculate_graph_y_invalid_targets`, `test_shift_history_overflow`, `test_update_status_partial_null`, `test_null_buffer_guards`).
+  - **Verification:** Host unit test harness passes 20 test functions / 36 assertions (`./test_runner` → GREEN) ✅
+

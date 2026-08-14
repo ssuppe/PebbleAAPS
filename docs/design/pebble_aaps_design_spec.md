@@ -78,16 +78,18 @@ Instead of printing cluttering labels like `"Carb"`, `"IOB"`, or `"Date"`, we re
 * **The Left Column** is dedicated entirely to **Insulin** (IOB, Detailed split, Basal rate).
 * **The Right Column** is dedicated entirely to **Intake and System state** (COB, Calendar Date).
 
-### 3. Maximum Contrast for E-Paper Hardware
-Pebble's memory-in-pixel (MIP) reflective screens suffer from reduced contrast in low light. To counter this:
-* We converted all text elements from gray (`#aaaaaa`) to **solid white (`#ffffff`)**. Hierarchy is now established cleanly through font size and positioning, while ensuring every letter pops under any lighting conditions.
-* The trend arrow matches the **glucose green (`#00ff00`)** and is aligned with the vertical text center of the BG value.
+### 3. Maximum Contrast for E-Paper Hardware (High-Contrast Light Mode)
+Pebble's memory-in-pixel (MIP) reflective screens suffer from reduced contrast under indoor or ambient lighting. To counter this:
+* We configured **High-Contrast Light Mode** (`window_set_background_color(s_main_window, GColorWhite)`). Hands, ticks, date, and status headers are rendered in dark high-contrast shades (`GColorBlack`, `GColorCobaltBlue`, `GColorDarkGray`).
+* The **Blood Glucose Reading** and **Trend Arrow** use dynamic color-coded state tinting (`BgColorState`): `GColorIslamicGreen` (In Range), `GColorOrange` (High), `GColorBulgarianRose` (Low), and `GColorDarkGray` with a 3px horizontal strikethrough layer (No Data / Stale $\ge$ 15m).
+* All 7 trend arrow icons (`arrow_flat.png`, `arrow_single_up.png`, `arrow_single_down.png`, `arrow_forty_five_up.png`, `arrow_forty_five_down.png`, `arrow_double_up.png`, `arrow_double_down.png`) are 36×36 1-bit crisp binary PNGs (solid white `#FFFFFF` shape fill on 100% transparent background).
+* At runtime, `gbitmap_get_palette(s_arrow_bitmap)[1] = target_color` dynamically color-tints the solid arrow shape in memory without requiring separate color image files on disk.
 
-### 4. 1-Dimensional Dithered Lines (Dashed Targets)
-Rather than solid bright bars, the graph target ranges are rendered using pixel-perfect repeating **`3px color / 3px transparent` dashed lines**. This visually dims the lines so they act as a secondary grid background, preventing them from competing with the white watch hands sweeping on top.
+### 4. 1-Dimensional Dashed Lines (Dashed Targets)
+Rather than solid bright bars, the graph target ranges are rendered using pixel-perfect repeating **`3px color / 3px transparent` dashed lines** (`GColorDarkGray` for High Target, `GColorBulgarianRose` for Low Target). This visually dims the lines so they act as a secondary grid background, preventing them from competing with the watch hands sweeping on top.
 
 ### 5. Bold Glucose Trend Curve
-Because scattered 2x2 dots look like visual noise and are hard to see on a watch, we connected the dots with a **continuous `2px` line** and increased the point sizes to **`4x4` pixels**, making the shape of your glucose curve instantly recognizable.
+Because scattered 2x2 dots look like visual noise and are hard to see on a watch, we connected the dots with a **continuous `2px` green line** and increased the point sizes to **`4x4` pixels** (`GColorIslamicGreen` in-range, `GColorOrange` high, `GColorBulgarianRose` low), making the shape of your glucose curve instantly recognizable.
 
 ---
 
@@ -96,10 +98,10 @@ Because scattered 2x2 dots look like visual noise and are hard to see on a watch
 To maintain the high-visibility, visually premium typography of the Lilita One typeface without causing heap memory exhaustion or long Bluetooth transmission delays, we employ several design-level optimizations:
 
 ### 1. Programmatic Layouts over Static Assets
-Dashed targets and clock ticks are drawn dynamically in the update callbacks using basic drawing primitives (`graphics_draw_pixel` and `graphics_draw_line`), avoiding the need to store static grid line image assets.
+Dashed targets, dial ticks, and the stale strikethrough line are drawn dynamically in update callbacks using basic drawing primitives (`graphics_draw_pixel` and `graphics_draw_line`), avoiding static background image assets.
 
-### 2. On-Demand Bitmap Swapping
-Instead of caching all ten trend direction arrows in memory concurrently, only the active trend arrow bitmap is loaded when a data update is received. The old bitmap is immediately freed back to the heap.
+### 2. On-Demand Bitmap Swapping & Palette Index Tinting
+Instead of caching all trend direction arrows in memory concurrently, only the active trend arrow bitmap is loaded when a data update is received. The old bitmap is immediately freed back to the heap. Runtime palette tinting (`palette[1] = target_color`) dynamically changes arrow color without re-allocating assets.
 
 ### 3. Glyph Character-Set Pruning (`characterRegex`)
-TrueType font compilation is strictly restricted in `package.json` to only compile character ranges that are actually displayed on the UI. The large 48px font only generates numbers and punctuation, while letters are only generated for the smaller 22px/32px fonts. This keeps the bundle size at ~24KB and slashes the active font memory usage by over 80% (~3.8 KB runtime heap RAM).
+TrueType font compilation is strictly restricted in `package.json` to only compile character ranges that are actually displayed on the UI. The large 48px font only generates numbers and punctuation, while letters are only generated for the smaller 22px/32px fonts. This keeps the bundle size at ~24KB and slashes active font memory usage by over 80% (~3.8 KB runtime heap RAM).
