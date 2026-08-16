@@ -199,11 +199,11 @@ static void update_date_display(struct tm *tick_time) {
 // Using GPath to allow rotation around (0,0) before shifting to Center.
 static const GPathInfo HOUR_HAND_INFO = {
   .num_points = 2,
-  .points     = (GPoint []) { {0, 0}, {0, -48} }  // Hand length ~48px (Commit f97e6b4)
+  .points     = (GPoint []) { {0, 0}, {0, -58} }  // 20% longer (was -48px)
 };
 static const GPathInfo MINUTE_HAND_INFO = {
   .num_points = 2,
-  .points     = (GPoint []) { {0, 0}, {0, -85} }  // Hand length ~85px (Commit f97e6b4)
+  .points     = (GPoint []) { {0, 0}, {0, -102} } // 20% longer (was -85px)
 };
 
 static void hands_layer_update_proc(Layer *layer, GContext *ctx) {
@@ -258,18 +258,18 @@ static void hands_layer_update_proc(Layer *layer, GContext *ctx) {
   // Minute hand
   gpath_rotate_to(s_minute_path, min_angle);
   gpath_move_to(s_minute_path, center);
-  graphics_context_set_stroke_width(ctx, 4); // Thicker (was 3)
+  graphics_context_set_stroke_width(ctx, 7); // Additional 30% thicker (was 5)
   gpath_draw_outline(ctx, s_minute_path);
 
   // Hour hand
   gpath_rotate_to(s_hour_path, hour_angle);
   gpath_move_to(s_hour_path, center);
-  graphics_context_set_stroke_width(ctx, 7); // Thicker (was 5)
+  graphics_context_set_stroke_width(ctx, 12); // Additional 30% thicker (was 9)
   gpath_draw_outline(ctx, s_hour_path);
 
   // Center dot
   graphics_context_set_fill_color(ctx, GColorCobaltBlue);
-  graphics_fill_circle(ctx, center, 5); // Larger dot for thicker hands
+  graphics_fill_circle(ctx, center, 7); // Larger hub (was 6)
   graphics_context_set_fill_color(ctx, GColorWhite);
   graphics_fill_circle(ctx, center, 2);
 }

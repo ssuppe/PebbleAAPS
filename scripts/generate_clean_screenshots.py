@@ -128,22 +128,22 @@ def render_watchface(bg_val, delta_str, age_str, color_rgb, arrow_type, iob_str=
     for gx, gy in graph_coords:
         draw.rectangle([gx-2, gy-2, gx+2, gy+2], fill=COLOR_GREEN)
 
-    # 11. Sweeping Analog Clock Hands (Hands matching commit f97e6b4)
+    # 11. Sweeping Analog Clock Hands (20% longer hands)
     cx, cy = 100, 114
-    # Hour hand (10 o'clock -> 300 deg)
+    # Hour hand (10 o'clock -> 300 deg) — 36px length
     h_angle = math.radians(300)
-    hx = cx + int(30 * math.sin(h_angle))
-    hy = cy - int(30 * math.cos(h_angle))
-    draw.line([(cx, cy), (hx, hy)], fill=COLOR_BLACK, width=4)
+    hx = cx + int(36 * math.sin(h_angle))
+    hy = cy - int(36 * math.cos(h_angle))
+    draw.line([(cx, cy), (hx, hy)], fill=COLOR_BLACK, width=6)
 
-    # Minute hand (2 o'clock -> 60 deg)
+    # Minute hand (2 o'clock -> 60 deg) — 58px length
     m_angle = math.radians(60)
-    mx = cx + int(48 * math.sin(m_angle))
-    my = cy - int(48 * math.cos(m_angle))
-    draw.line([(cx, cy), (mx, my)], fill=COLOR_BLACK, width=3)
+    mx = cx + int(58 * math.sin(m_angle))
+    my = cy - int(58 * math.cos(m_angle))
+    draw.line([(cx, cy), (mx, my)], fill=COLOR_BLACK, width=5)
 
     # Hand center hub
-    draw.ellipse([cx-4, cy-4, cx+4, cy+4], fill=COLOR_WHITE, outline=COLOR_BLACK, width=2)
+    draw.ellipse([cx-6, cy-6, cx+6, cy+6], fill=COLOR_WHITE, outline=COLOR_BLACK, width=2)
 
     return img
 
