@@ -1,16 +1,16 @@
 {
-  "name": "pebble_aaps_watchface",
-  "author": "AAPS Pebble Developer",
+  "name": "pebble-aaps",
+  "author": "Soopaloop",
   "version": "1.0.0",
   "keywords": [
     "pebble-app"
   ],
-  "private": true,
+  "license": "GPL-3.0-or-later",
   "dependencies": {
     "pebble-scalable": "^2.3.0"
   },
   "pebble": {
-    "displayName": "AAPS Watchface",
+    "displayName": "PebbleAAPS",
     "uuid": "54d3008f-e144-4712-b201-24bc515c40ba",
     "sdkVersion": "3",
     "enableMultiJS": false,

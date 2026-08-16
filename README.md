@@ -4,6 +4,21 @@ A lightweight, low-power, and robust Pebble C watchface designed for the **Pebbl
 
 ---
 
+## ⚠️ Safety Notice & Disclaimer
+
+> **IMPORTANT**: **PebbleAAPS** is a passive, secondary visual monitoring display only. It does not calculate or deliver insulin, nor does it control your pump, CGM, or looping algorithms.
+> 
+> **Scope**: This safety notice applies to the AndroidAPS Pebble sync plugin, this PebbleAAPS watchface application, and any companion code, libraries, watchapps, or protocols that communicate with it.
+> 
+> **Hardware & Supplies**: The safety of AAPS relies on the safety features of your hardware (phone, pump, CGM). Only use a fully functioning FDA/CE-approved insulin pump and CGM. Do not use broken, modified, or self-built insulin pumps or CGM receivers. Only use original consumable supplies (inserters, cannulas, and insulin reservoirs) approved by the manufacturer for use with your pump and CGM. Using untested or modified supplies can cause inaccuracy and insulin dosing errors, resulting in significant risk to the user.
+> 
+> **User Responsibility & Assumption of Risk**: By installing, building, or using this watchface, sync plugin, or associated communication code, you acknowledge and agree that:
+> - You assume **full, sole responsibility** for your health, medical treatment decisions, and use of this software.
+> - Watch displays, companion plugins, and Bluetooth links are subject to disconnections, signal loss, stale data, battery exhaustion, or software/rendering delays. **Never make medical or insulin dosing decisions based solely on this watchface or plugin.** Always verify current readings on your primary FDA/CE-approved medical hardware or blood glucose meter.
+> - This software is provided **"AS IS"** under the GNU General Public License v3.0, without warranty of any kind, express or implied. The developers, contributors, and distributors assume no liability or responsibility for any injury, illness, dosing errors, or damages resulting from the use of or reliance upon this software or associated communication code.
+
+---
+
 ## Features
 
 - **Responsive Scaling (`pebble-scalable`)**: Fully responsive layout designed using relative coordinates that auto-scale gracefully to Emery (200x228), classic (144x168), and circular (180x180) screens.
@@ -137,3 +152,20 @@ If working over SSH or headless:
 1. Copy the compiled bundle `build/PebbleAAPS.pbw` to your Android phone.
 2. Tap the file in your phone's File Manager and select **Gadgetbridge** (or the official **Pebble app**) to install it on your watch.
 3. In **AndroidAPS**, open the **Config Builder**, check the box next to **Pebble** in the *Sync plugins* section, and confirm settings match. AAPS will now automatically sync readings directly to your watchface.
+
+---
+
+## 📚 Documentation & Contributing
+
+- **Documentation Index**: See [`docs/README.md`](docs/README.md) for complete technical specifications, architecture diagrams, and protocol definitions.
+- **Architecture Overview**: [`docs/eng/architecture.md`](docs/eng/architecture.md)
+- **AAPS Protocol Specification**: [`docs/eng/androidaps_pebble_protocol.md`](docs/eng/androidaps_pebble_protocol.md)
+- **Design Blueprint**: [`docs/design/pebble_aaps_design_spec.md`](docs/design/pebble_aaps_design_spec.md)
+- **Contributor Guide**: Check out [`CONTRIBUTING.md`](CONTRIBUTING.md) for local environment setup, host testing, and PR submission guidelines.
+
+---
+
+## ⚖️ License
+
+Distributed under the **GNU General Public License v3.0 (GPL-3.0)**. See [`LICENSE`](LICENSE) for complete details.
+

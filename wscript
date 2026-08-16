@@ -16,11 +16,11 @@ def options(ctx):
 def configure(ctx):
     """
     This method is used to configure your build. ctx.load(`pebble_sdk`) automatically configures
-    a build for each valid platform in `targetPlatforms`. Platform-specific configuration: add your
-    change after calling ctx.load('pebble_sdk') and make sure to set the correct environment first.
-    Universal configuration: add your change prior to calling ctx.load('pebble_sdk').
+    a build for each valid platform in `targetPlatforms`.
     """
     ctx.load('pebble_sdk')
+    for env in ctx.all_envs.values():
+        env.append_value('CFLAGS', ['-Os'])
 
 
 def build(ctx):

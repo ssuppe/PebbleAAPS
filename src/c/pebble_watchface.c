@@ -199,20 +199,20 @@ static void update_date_display(struct tm *tick_time) {
 // Using GPath to allow rotation around (0,0) before shifting to Center.
 static const GPathInfo HOUR_HAND_INFO = {
   .num_points = 2,
-  .points     = (GPoint []) { {0, 0}, {0, -48} }  // Hand length ~48px (was 38)
+  .points     = (GPoint []) { {0, 0}, {0, -48} }  // Hand length ~48px (Commit f97e6b4)
 };
 static const GPathInfo MINUTE_HAND_INFO = {
   .num_points = 2,
-  .points     = (GPoint []) { {0, 0}, {0, -85} }  // Hand length ~85px (was 72)
+  .points     = (GPoint []) { {0, 0}, {0, -85} }  // Hand length ~85px (Commit f97e6b4)
 };
 
 static void hands_layer_update_proc(Layer *layer, GContext *ctx) {
   GRect bounds = layer_get_bounds(layer);
 
   // ── Dial Ticks (drawn under the hands, but on top of the graph) ──
-  // Cardinal ticks (black, strokeWidth=2, drawn as lines)
+  // Cardinal ticks (12, 3, 6, 9) — Black, strokeWidth=4 (thickest)
   graphics_context_set_stroke_color(ctx, GColorBlack);
-  graphics_context_set_stroke_width(ctx, 2);
+  graphics_context_set_stroke_width(ctx, 4);
   
   // 12 o'clock: from top center down 10px
   graphics_draw_line(ctx, GPoint(scl_x(CLOCK_CX_T), 0), GPoint(scl_x(CLOCK_CX_T), scl_y(44)));
@@ -223,9 +223,9 @@ static void hands_layer_update_proc(Layer *layer, GContext *ctx) {
   // 9 o'clock: from left center right 10px
   graphics_draw_line(ctx, GPoint(0, scl_y(CLOCK_CY_T)), GPoint(scl_x(50), scl_y(CLOCK_CY_T)));
 
-  // ── Diagonal corner ticks (gray #888, strokeWidth=1, angled lines) ──
+  // ── Diagonal corner ticks (1, 2, 4, 5, 7, 8, 10, 11) — Gray, strokeWidth=3 (thicker) ──
   graphics_context_set_stroke_color(ctx, GColorDarkGray);
-  graphics_context_set_stroke_width(ctx, 1);
+  graphics_context_set_stroke_width(ctx, 3);
 
   // 1 o'clock: scaled: x=830, y=0
   graphics_draw_line(ctx, GPoint(scl_x(830), 0), GPoint(scl_x(805), scl_y(39)));
