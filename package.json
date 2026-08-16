@@ -23,6 +23,15 @@
     "screenshots": {
       "emery": [
         "resources/screenshots/emery_screenshot.png"
+      ],
+      "basalt": [
+        "resources/screenshots/basalt_screenshot.png"
+      ],
+      "chalk": [
+        "resources/screenshots/chalk_screenshot.png"
+      ],
+      "diorite": [
+        "resources/screenshots/diorite_screenshot.png"
       ]
     },
     "watchapp": {
