@@ -39,5 +39,6 @@ Welcome to the **PebbleAAPS** technical documentation hub! This directory contai
 
 ## 🔍 Quick Links for New Developers
 - **Root README**: [`README.md`](../README.md)
+- **Rebble Store Listing**: [`PEBBLE_DESCRIPTION.md`](PEBBLE_DESCRIPTION.md)
 - **Roadmap & Tasks**: [`TASKS.md`](../TASKS.md)
 - **License**: [`LICENSE`](../LICENSE) (GNU General Public License v3.0)
