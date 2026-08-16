@@ -6,16 +6,16 @@ A lightweight, low-power, and robust Pebble C watchface designed for the **Pebbl
 
 ## ⚠️ Safety Notice & Disclaimer
 
-> **IMPORTANT**: **PebbleAAPS** is a passive, secondary visual monitoring display only. It does not calculate or deliver insulin, nor does it control your pump, CGM, or looping algorithms.
+> **IMPORTANT**: **PebbleAAPS** (and any associated watchface, watchapp, sync plugin, or communication code) is a passive, secondary visual monitoring display only. It does not calculate or deliver insulin, nor does it control your pump, CGM, or looping algorithms.
 > 
-> **Scope**: This safety notice applies to the AndroidAPS Pebble sync plugin, this PebbleAAPS watchface application, and any companion code, libraries, watchapps, or protocols that communicate with it.
+> **Scope**: This safety notice applies to the AndroidAPS Pebble sync plugin, this PebbleAAPS watchface application, any alternative or derived watchfaces/watchapps, and all code, libraries, or protocols that communicate with or transfer data between AndroidAPS and Pebble devices.
 > 
 > **Hardware & Supplies**: The safety of AAPS relies on the safety features of your hardware (phone, pump, CGM). Only use a fully functioning FDA/CE-approved insulin pump and CGM. Do not use broken, modified, or self-built insulin pumps or CGM receivers. Only use original consumable supplies (inserters, cannulas, and insulin reservoirs) approved by the manufacturer for use with your pump and CGM. Using untested or modified supplies can cause inaccuracy and insulin dosing errors, resulting in significant risk to the user.
 > 
-> **User Responsibility & Assumption of Risk**: By installing, building, or using this watchface, sync plugin, or associated communication code, you acknowledge and agree that:
+> **User Responsibility & Assumption of Risk**: By installing, building, or using this watchface, the AndroidAPS Pebble sync plugin, or any code that communicates with them, you acknowledge and agree that:
 > - You assume **full, sole responsibility** for your health, medical treatment decisions, and use of this software.
-> - Watch displays, companion plugins, and Bluetooth links are subject to disconnections, signal loss, stale data, battery exhaustion, or software/rendering delays. **Never make medical or insulin dosing decisions based solely on this watchface or plugin.** Always verify current readings on your primary FDA/CE-approved medical hardware or blood glucose meter.
-> - This software is provided **"AS IS"** under the GNU General Public License v3.0, without warranty of any kind, express or implied. The developers, contributors, and distributors assume no liability or responsibility for any injury, illness, dosing errors, or damages resulting from the use of or reliance upon this software or associated communication code.
+> - Watch displays, companion sync plugins, and Bluetooth communications are subject to disconnections, signal loss, stale data, battery exhaustion, or software/rendering delays. **Never make medical or insulin dosing decisions based solely on this watchface, sync plugin, or associated code.** Always verify current readings on your primary FDA/CE-approved medical hardware or blood glucose meter.
+> - This software is provided **"AS IS"** under the GNU General Public License v3.0, without warranty of any kind, express or implied. The developers, contributors, and distributors assume no liability or responsibility for any injury, illness, dosing errors, or damages resulting from the use of or reliance upon this software, watchface, plugin, or associated communication code.
 
 ---
 
