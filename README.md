@@ -1,5 +1,9 @@
 # Pebble AAPS Watchface (Pebble Time 2 v2)
 
+<p align="center">
+  <img src="assets/pebble_hardware_photo.jpg" alt="PebbleAAPS on Wristwatch" width="480">
+</p>
+
 A lightweight, low-power, and robust Pebble C watchface designed for the **Pebble Time 2** (Emery platform, 200x228 color display) and compatible with other Pebble models via `pebble-scalable`. It connects to **AndroidAPS (AAPS)** to show real-time glucose status, active pump treatments, and a glucose history curve.
 
 ---
